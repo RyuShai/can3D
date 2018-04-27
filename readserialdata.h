@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QWidget>
 
 class ReadSerialData :public QObject
 {

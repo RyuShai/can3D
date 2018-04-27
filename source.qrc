@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>cube.png</file>
         <file>fshader.glsl</file>
         <file>vshader.glsl</file>
+        <file alias="barcode">../build-Can3DWiget-Desktop_Qt_5_10_0_GCC_64bit-Debug/logo/barcode.png</file>
+        <file alias="logo">../build-Can3DWiget-Desktop_Qt_5_10_0_GCC_64bit-Debug/logo/logo.png</file>
     </qresource>
 </RCC>

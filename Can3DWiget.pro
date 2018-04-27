@@ -26,22 +26,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
     readserialdata.cpp \
-    draw3d.cpp
+    mainwindow.cpp \
+    config.cpp
 
 HEADERS += \
-        mainwindow.h \
     readserialdata.h \
-    draw3d.h
+    config.h \
+    mainwindow.h
 
 FORMS += \
         mainwindow.ui
 
-DISTFILES += \
-    fshader.glsl \
-    vshader.glsl \
-    cube.png
 
 RESOURCES += \
     source.qrc

@@ -2,25 +2,45 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QSerialPort>
-#include <QSerialPortInfo>
-#include <QList>
-namespace Ui {
-class MainWindow;
-}
-
+#include <QAction>
+#include <QMenu>
+#include <QMenuBar>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QGroupBox>
+#include "config.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-    void Test();
+    explicit MainWindow(QWidget *parent = nullptr);
+
+signals:
+
+public slots:
+    void Exit();
 private:
-    Ui::MainWindow *ui;
-    QSerialPort *serial;
-    QList<QSerialPortInfo> list;
+    QMenuBar *menuBar;
+    QMenu *menu;
+    QAction *menuExitAction;
+    QBoxLayout *layout;
+    QHBoxLayout *uperLayout;
+    QBoxLayout *lowerLayout;
+    QWidget *groupLeftLayout;
+    QWidget *groupMidLayout;
+    QGroupBox *groupRightLayout;
+    QWidget *widget;
+    QWidget *uperWidget;
+    QWidget *lowerWidget;
+
+
+
+    //function
+    void CreateMenu();
+    void CreateLayout();
+    void CreateGroupLeftLayout();
+    void CreateGroupMidLayout();
+    void CreateGroupRightLayout();
 };
 
 #endif // MAINWINDOW_H

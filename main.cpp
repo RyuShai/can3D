@@ -1,16 +1,14 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include "readserialdata.h"
-#include "draw3d.h"
+#include "config.h"
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
-    Draw3D draw;
-    draw.show();
-//    ReadSerialData reader;
-//    reader.DisplaySerial();
+    QApplication app(argc, argv);
 
-    return a.exec();
+        MainWindow w;
+        w.setWindowTitle(Config::MAIN_WINDOW_TITLE);
+        w.resize(Config::WINDO_WIDTH,Config::WINDOW_HEIGHT);
+        w.show();
+
+    return app.exec();
 }
