@@ -8,7 +8,9 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGroupBox>
+#include <QList>
 #include "config.h"
+#include "readserialdata.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -19,16 +21,25 @@ signals:
 
 public slots:
     void Exit();
+    //triggerd when port action clicked
+    //connect serial to selected port
+    void onPortSelected();
 private:
+    ReadSerialData *serial;
+    //menu
     QMenuBar *menuBar;
     QMenu *menu;
     QAction *menuExitAction;
+    //port menu
+    QMenu *portMenu;
+    QList<QAction> listPortName;
+
     QBoxLayout *layout;
     QHBoxLayout *uperLayout;
     QBoxLayout *lowerLayout;
     QWidget *groupLeftLayout;
     QWidget *groupMidLayout;
-    QGroupBox *groupRightLayout;
+    QWidget *groupRightLayout;
     QWidget *widget;
     QWidget *uperWidget;
     QWidget *lowerWidget;
@@ -41,6 +52,7 @@ private:
     void CreateGroupLeftLayout();
     void CreateGroupMidLayout();
     void CreateGroupRightLayout();
+    void CreatePortName();
 };
 
 #endif // MAINWINDOW_H

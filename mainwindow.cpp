@@ -5,11 +5,17 @@
 #include <QPalette>
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+    //init
+    serial = new ReadSerialData();
+
     CreateLayout();
     CreateMenu();
     CreateGroupLeftLayout();
     CreateGroupMidLayout();
     CreateGroupRightLayout();
+
+
+
 }
 
 void MainWindow::Exit()
@@ -17,11 +23,24 @@ void MainWindow::Exit()
     close();
 }
 
+void MainWindow::onPortSelected()
+{
+    QAction *action = qobject_cast<QAction*>(sender());
+    qDebug()<<"i :" <<action->text();
+    serial->Connect2Port(action->text());
+}
+
 void MainWindow::CreateMenu()
 {
     menuBar = new QMenuBar;
     //file
-    menu = new QMenu(Config::MENU_TEXT, this);
+    menu = new QMenu(Config::MENU_TEXT_FILE, this);
+    //add portMenu
+    portMenu = menu->addMenu(Config::MENU_TEXT_PORT);
+    CreatePortName();
+
+
+    //exit action
     menuExitAction =menu->addAction(Config::MENU_TEXT_EXIT);
     menuBar->addMenu(menu);
 
@@ -58,6 +77,7 @@ void MainWindow::CreateGroupLeftLayout()
     /// height,width, depth, weight
     /// It form layout
     groupLeftLayout = new QWidget;
+    groupLeftLayout->setStyleSheet("background-color:yellow");
     groupLeftLayout->setFixedSize(Config::LEFT_GROUP_WIDTH,Config::LEFT_GROUP_HEIGHT);
 
     QGridLayout *gridLayout = new QGridLayout;
@@ -96,15 +116,15 @@ void MainWindow::CreateGroupLeftLayout()
 void MainWindow::CreateGroupMidLayout()
 {
     groupMidLayout = new QWidget;
-    groupMidLayout->setFixedSize(Config::MID_GROUP_WIDTH,Config::MID_GROUP_HEIGHT);
+//    groupMidLayout->setFixedSize(Config::MID_GROUP_WIDTH,Config::MID_GROUP_HEIGHT);
 
     QGridLayout *layout = new QGridLayout;
+    layout->setSizeConstraint(QLayout::SetMinimumSize);
     //set logo
     QLabel *logo = new QLabel();
     logo->setPixmap( QPixmap(":/logo").scaled(Config::LOGO_WIDTH,Config::LOGO_HEIGHT,Qt::KeepAspectRatio));
-    layout->addWidget(logo,0,0,1,1);
+    layout->addWidget(logo,0,0,2,1);
 
-//    layout->addItem(new QSpacerItem(20,20,QSizePolicy::Minimum,QSizePolicy::Expanding),1,0,1,1);
     //set barcode image
     QLabel *barcodeImage = new QLabel();
     barcodeImage->setPixmap(QPixmap(":/barcode").scaled(Config::BARCODE_WIDTH,Config::BARCODE_HEIGHT,Qt::KeepAspectRatio));
@@ -112,10 +132,8 @@ void MainWindow::CreateGroupMidLayout()
     //set barcode label
     QLabel *barcodeLabel = new QLabel();
     barcodeLabel->setText("test barcode label");
-    layout->addWidget(barcodeLabel,1,0,1,1);
+    layout->addWidget(barcodeLabel,3,0,1,1);
 
-    layout->setHorizontalSpacing(5);
-    layout->setVerticalSpacing(0);
     groupMidLayout->setLayout(layout);
     uperLayout->addWidget(groupMidLayout);
 
@@ -123,7 +141,20 @@ void MainWindow::CreateGroupMidLayout()
 
 void MainWindow::CreateGroupRightLayout()
 {
-    groupRightLayout = new QGroupBox("right");
+    groupRightLayout = new QWidget();
 
     uperLayout->addWidget(groupRightLayout);
+}
+
+void MainWindow::CreatePortName()
+{
+    portMenu->clear();
+    serial->ListPortAvailable();
+    qDebug()<<"list port size: "<<serial->getListPort().size();
+    for(int i=0; i<serial->getListPort().size();i++)
+    {
+        QAction *action = portMenu->addAction(serial->getListPort().at(i).portName());
+        connect(action,&QAction::triggered,this,&MainWindow::onPortSelected);
+    }
+
 }

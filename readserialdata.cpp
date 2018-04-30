@@ -5,17 +5,6 @@ ReadSerialData::ReadSerialData()
 {
     qDebug("start");
     serial =new QSerialPort();
-    serial->setBaudRate(QSerialPort::Baud9600);
-    ListPortAvailable();
-    serial->setPort(list.at(0));
-//    serial->setPortName("ttyACM0");
-    serial->setDataBits(QSerialPort::Data8);
-    serial->setParity(QSerialPort::NoParity);
-    serial->setStopBits(QSerialPort::OneStop);
-    serial->open(QIODevice::ReadWrite);
-    if(serial->isOpen())
-            qDebug("open");
-    connect(serial,&QSerialPort::readyRead,this,&ReadSerialData::DisplaySerial);
 }
 
 ReadSerialData::~ReadSerialData()
@@ -31,8 +20,65 @@ void ReadSerialData::DisplaySerial()
 
 void ReadSerialData::ListPortAvailable()
 {
-    list = QSerialPortInfo::availablePorts();
-    foreach (QSerialPortInfo info, list) {
+    listPort = QSerialPortInfo::availablePorts();
+    foreach (QSerialPortInfo info, listPort) {
         qDebug()<<"name "<<info.portName();
     }
+}
+
+void ReadSerialData::ConvertSerialData()
+{
+    //convert data to readable
+    data = serial->readAll().data();
+    qDebug()<<"data: "<<data;
+}
+
+QList<QSerialPortInfo> ReadSerialData::getListPort() const
+{
+    return listPort;
+}
+
+void ReadSerialData::setListPort(const QList<QSerialPortInfo> &value)
+{
+    listPort = value;
+}
+
+bool ReadSerialData::Connect2Port(QSerialPortInfo port, qint32 baudrate, QSerialPort::DataBits databits, QSerialPort::Parity parity, QSerialPort::StopBits stopbits)
+{
+    //if port opening, close it
+    if(serial->isOpen())
+        serial->close();
+
+    serial->setPort(port);
+    serial->setBaudRate(baudrate);
+    serial->setDataBits(databits);
+    serial->setParity(parity);
+    serial->setStopBits(stopbits);
+    if(!serial->open(QIODevice::ReadWrite))
+    {
+        //connect to port failed
+        return false;
+    }
+    connect(serial,&QSerialPort::readyRead,this,&ReadSerialData::ConvertSerialData);
+}
+
+bool ReadSerialData::Connect2Port(QString portName, qint32 baudrate, QSerialPort::DataBits databits, QSerialPort::Parity parity, QSerialPort::StopBits stopbits)
+{
+    Log("test");
+    //if port opening, close it
+    if(serial->isOpen())
+        serial->close();
+
+    serial->setPortName(portName);
+    serial->setBaudRate(baudrate);
+    serial->setDataBits(databits);
+    serial->setParity(parity);
+    serial->setStopBits(stopbits);
+    if(!serial->open(QIODevice::ReadWrite))
+    {
+        //connect to port failed
+        qDebug("connect serial fail");
+        return false;
+    }
+    connect(serial,&QSerialPort::readyRead,this,&ReadSerialData::ConvertSerialData);
 }

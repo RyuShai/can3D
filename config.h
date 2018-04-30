@@ -2,8 +2,9 @@
 #define CONFIG_H
 #include <QString>
 #include <QDebug>
-
+#define Log(text) qDebug()<<Q_FUNC_INFO<<" "<<text;
 namespace Config {
+
 //object size
 //unit pixel
 static int WINDOW_HEIGHT = 600 ;
@@ -20,7 +21,7 @@ static int MID_GROUP_HEIGHT = 300;
 static  int LOGO_WIDTH = 80;
 static  int LOGO_HEIGHT = 80;
 static int BARCODE_WIDTH = 160;
-static int BARCODE_HEIGHT = 40;
+static int BARCODE_HEIGHT = 80;
 
 
 
@@ -30,8 +31,9 @@ static int BARCODE_HEIGHT = 40;
 
 //object display text
 static QString MAIN_WINDOW_TITLE = "MAIN TITLE" ;
-static QString MENU_TEXT ="File" ;
+static QString MENU_TEXT_FILE ="File" ;
 static QString MENU_TEXT_EXIT = "Exit";
+static QString MENU_TEXT_PORT = "Port";
 
 static QString FORM_TEXT_HEIGHT = "Height";
 static QString FORM_TEXT_WIDTH  = "Width";
