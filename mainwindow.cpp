@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 void MainWindow::Exit()
 {
+    serial->CloseConnection();
+    serial = Q_NULLPTR;
     close();
 }
 
@@ -27,7 +29,7 @@ void MainWindow::onPortSelected()
 {
     QAction *action = qobject_cast<QAction*>(sender());
     qDebug()<<"i :" <<action->text();
-    serial->Connect2Port(action->text());
+    serial->Connect2Port(action->text(),9600);
 }
 
 void MainWindow::CreateMenu()

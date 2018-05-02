@@ -47,6 +47,15 @@ static QString UNIT_WEIGHT = "gam";
 static QString UNIT_VOLUME = "cm^3";
 static QString UNIT_DENSITY = "gam/cm3";
 
+//enum
+static QString WIDTH="width";
+static QString HEIGHT="height";
+static QString DEPTH="depth";
+static QString WEIGHT="weight";
+static QString VOLUME="volume";
+static QString DENSITY="density";
+static QString BARCODE="barcode";
+
 }
 
 
