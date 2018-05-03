@@ -14,8 +14,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     CreateGroupMidLayout();
     CreateGroupRightLayout();
 
+    Connection();
 
-
+    //init model
+    model = new ModelInteract;
+    model->setPath2db("/home/ryu/Documents/Project/Qt/Can3DWiget/can3D.db");
 }
 
 void MainWindow::Exit()
@@ -30,6 +33,18 @@ void MainWindow::onPortSelected()
     QAction *action = qobject_cast<QAction*>(sender());
     qDebug()<<"i :" <<action->text();
     serial->Connect2Port(action->text(),9600);
+}
+
+void MainWindow::onReceivedData(ReceivedData data)
+{
+    Log("widget size: "<<groupLeftLayout->layout()->count());
+    groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_HEIGHT)->setText(QString::number(data.height));
+    groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_WIDTH)->setText(QString::number(data.width));
+    groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_DEPTH)->setText(QString::number(data.depth));
+    groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_WEIGHT)->setText(QString::number(data.weight));
+    groupLeftLayout->findChild<QLabel *>(Config::FORM_TEXT_VOLUME)->setText(QString::number(CalVolume(data.width,data.height,data.depth)));
+
+    model->InserRecord(data.width,data.height,data.depth,data.weight,data.volume,data.density,data.barcode);
 }
 
 void MainWindow::CreateMenu()
@@ -86,27 +101,39 @@ void MainWindow::CreateGroupLeftLayout()
     gridLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
     gridLayout->addWidget(new QLabel(Config::FORM_TEXT_HEIGHT),0,0,1,1);
-    gridLayout->addWidget(new QLineEdit,0,1,1,1);
+    QLineEdit *leHeight = new QLineEdit();
+    leHeight->setObjectName(Config::FORM_TEXT_HEIGHT);
+    gridLayout->addWidget(leHeight,0,1,1,1);
     gridLayout->addWidget(new QLabel(Config::UNIT_LENGTH),0,2,1,1);
 
     gridLayout->addWidget(new QLabel(Config::FORM_TEXT_WIDTH));
-    gridLayout->addWidget(new QLineEdit());
+    QLineEdit *leWidth = new QLineEdit();
+    leWidth->setObjectName(Config::FORM_TEXT_WIDTH);
+    gridLayout->addWidget(leWidth);
     gridLayout->addWidget(new QLabel(Config::UNIT_LENGTH));
 
     gridLayout->addWidget(new QLabel(Config::FORM_TEXT_DEPTH));
-    gridLayout->addWidget(new QLineEdit());
+    QLineEdit *leDepth = new QLineEdit();
+    leDepth->setObjectName(Config::FORM_TEXT_DEPTH);
+    gridLayout->addWidget(leDepth);
     gridLayout->addWidget(new QLabel(Config::UNIT_LENGTH));
 
     gridLayout->addWidget(new QLabel(Config::FORM_TEXT_WEIGHT));
-    gridLayout->addWidget(new QLineEdit());
+    QLineEdit *leWeight = new QLineEdit();
+    leWeight->setObjectName(Config::FORM_TEXT_WEIGHT);
+    gridLayout->addWidget(leWeight);
     gridLayout->addWidget(new QLabel(Config::UNIT_WEIGHT));
 
     gridLayout->addWidget(new QLabel(Config::FORM_TEXT_VOLUME));
-    gridLayout->addWidget(new QLabel("volume"));
+    QLabel * lblVolumne = new QLabel();
+    lblVolumne->setObjectName(Config::FORM_TEXT_VOLUME);
+    gridLayout->addWidget(lblVolumne);
     gridLayout->addWidget(new QLabel(Config::UNIT_VOLUME));
 
     gridLayout->addWidget(new QLabel(Config::FORM_TEXT_DENSITY));
-    gridLayout->addWidget(new QLabel("density"));
+    QLabel *lblDensity = new QLabel();
+    lblDensity->setObjectName(Config::FORM_TEXT_DENSITY);
+    gridLayout->addWidget(lblDensity);
     gridLayout->addWidget(new QLabel(Config::UNIT_DENSITY));
 
 
@@ -159,4 +186,14 @@ void MainWindow::CreatePortName()
         connect(action,&QAction::triggered,this,&MainWindow::onPortSelected);
     }
 
+}
+
+float MainWindow::CalVolume(float w, float h, float d)
+{
+    return w*h*d;
+}
+
+void MainWindow::Connection()
+{
+    connect(serial,&ReadSerialData::DataReceived,this,&MainWindow::onReceivedData);
 }

@@ -3,6 +3,25 @@
 #include <QString>
 #include <QDebug>
 #define Log(text) qDebug()<<Q_FUNC_INFO<<" "<<text;
+struct ReceivedData
+{
+    float width=0;
+    float height=0;
+    float depth=0;
+    float weight=0;
+    float volume=0;
+    float density=0;
+    QString barcode="barcode";
+    QString date="";
+    void Clear(){
+        width=height=depth=weight=volume=density=0;
+        barcode = date ="";
+    }
+    void toString()
+    {
+        Log("width: "<<width <<" height: "<<height<<" depth: "<<depth<<"\nvolume: "<<volume<<" density: "<<density<<"\nbarcode: "<<" date: "<<date);
+    }
+};
 namespace Config {
 
 //object size

@@ -11,6 +11,7 @@
 #include <QList>
 #include "config.h"
 #include "readserialdata.h"
+#include "modelinteract.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -24,7 +25,10 @@ public slots:
     //triggerd when port action clicked
     //connect serial to selected port
     void onPortSelected();
+    void onReceivedData(ReceivedData data);
 private:
+    //database
+    ModelInteract* model;
     ReadSerialData *serial;
     //menu
     QMenuBar *menuBar;
@@ -53,6 +57,9 @@ private:
     void CreateGroupMidLayout();
     void CreateGroupRightLayout();
     void CreatePortName();
+    float CalVolume(float w, float h, float d);
+
+    void Connection();
 };
 
 #endif // MAINWINDOW_H

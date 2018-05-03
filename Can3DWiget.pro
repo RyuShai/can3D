@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 QT += serialport xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
     readserialdata.cpp \
     mainwindow.cpp \
-    config.cpp
+    config.cpp \
+    modelinteract.cpp
 
 HEADERS += \
     readserialdata.h \
     config.h \
-    mainwindow.h
+    mainwindow.h \
+    modelinteract.h
 
 FORMS += \
         mainwindow.ui

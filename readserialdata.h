@@ -8,28 +8,11 @@
 #include <QWidget>
 #include "config.h"
 
-struct ReceivedData
-{   
-    float width=0;
-    float height=0;
-    float depth=0;
-    float weight=0;
-    float volume=0;
-    float density=0;
-    QString barcode="";
-    QString date="";
-    void Clear(){
-        width=height=depth=weight=volume=density=0;
-        barcode = date ="";
-    }
-    void toString()
-    {
-        Log("width: "<<width <<" height: "<<height<<" depth: "<<depth<<"\nvolume: "<<volume<<" density: "<<density<<"\nbarcode: "<<" date: "<<date);
-    }
-};
+
 
 class ReadSerialData :public QObject
 {
+    Q_OBJECT
 public:
     ReadSerialData();
     ~ReadSerialData();
@@ -47,6 +30,8 @@ public:
     void CloseConnection();
     void ConvertSerialData(QString data);
     ReceivedData receiveData;
+signals:
+    void DataReceived(ReceivedData receiveData);
 public slots:
     void ListPortAvailable();
     void onReceiveData();

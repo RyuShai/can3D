@@ -4,5 +4,6 @@
         <file>vshader.glsl</file>
         <file>barcode.png</file>
         <file>logo.png</file>
+        <file>can3D.db</file>
     </qresource>
 </RCC>
