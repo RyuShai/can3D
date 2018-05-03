@@ -9,6 +9,10 @@
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QList>
+#include <QStandardItemModel>
+#include <QStandardItem>
+#include <QTableView>
+#include <QHeaderView>
 #include "config.h"
 #include "readserialdata.h"
 #include "modelinteract.h"
@@ -46,8 +50,7 @@ private:
     QWidget *groupRightLayout;
     QWidget *widget;
     QWidget *uperWidget;
-    QWidget *lowerWidget;
-
+    QTableView *lowerWidget;
 
 
     //function
@@ -56,6 +59,7 @@ private:
     void CreateGroupLeftLayout();
     void CreateGroupMidLayout();
     void CreateGroupRightLayout();
+    void CreateLowerLayout();
     void CreatePortName();
     float CalVolume(float w, float h, float d);
 

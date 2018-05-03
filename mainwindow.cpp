@@ -3,6 +3,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPalette>
+
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     //init
@@ -13,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     CreateGroupLeftLayout();
     CreateGroupMidLayout();
     CreateGroupRightLayout();
+    CreateLowerLayout();
 
     Connection();
 
@@ -77,7 +80,7 @@ void MainWindow::CreateLayout()
     uperLayout->setSizeConstraint(QLayout::SetMinimumSize);
     uperWidget->setLayout(uperLayout);
 
-    lowerWidget = new QWidget;
+    lowerWidget = new QTableView;
     lowerLayout = new QHBoxLayout;
     lowerWidget->setLayout(lowerLayout);
 
@@ -173,6 +176,27 @@ void MainWindow::CreateGroupRightLayout()
     groupRightLayout = new QWidget();
 
     uperLayout->addWidget(groupRightLayout);
+}
+
+void MainWindow::CreateLowerLayout()
+{
+//    lowerWidget = new QTableView;
+    QStandardItemModel* model = new QStandardItemModel;
+    model->setHorizontalHeaderLabels(QStringList()<<"width"<<"height"<<"depth"<<"weight"<<"volume"<<"density"<<"barcode"<<"date");
+    QList<QStandardItem *>item;
+    item.append(new QStandardItem("width"));
+    item.append(new QStandardItem("height"));
+    item.append(new QStandardItem("depth"));
+    item.append(new QStandardItem("depth"));
+    item.append(new QStandardItem("density"));
+    item.append(new QStandardItem("barcode"));
+    item.append(new QStandardItem("date"));
+
+    model->appendRow(item);
+    lowerWidget->setModel(model);
+    lowerWidget->verticalHeader()->hide();
+    lowerWidget->horizontalHeader()->setStretchLastSection(true);
+//    lowerLayout->addWidget(lowerWidget);
 }
 
 void MainWindow::CreatePortName()
