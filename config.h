@@ -5,6 +5,18 @@
 #define Log(text) qDebug()<<Q_FUNC_INFO<<" "<<text;
 struct ReceivedData
 {
+    ReceivedData(float id =0,float width=0, float height=0, float depth=0, float weight=0,float volume=0, float density=0, QString barcode="", QString date=""){
+        id=id;
+        width = width;
+        height = height;
+        depth = depth;
+        weight = weight;
+        volume = volume;
+        density = density;
+        barcode = barcode;
+        date = date;
+    }
+    float id=0;
     float width=0;
     float height=0;
     float depth=0;

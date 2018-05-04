@@ -128,6 +128,6 @@ void ReadSerialData::ConvertSerialData(QString data)
     }
     receiveData.date = QDate::currentDate().toString("dd-MM-yyyy");
     receiveData.toString();
-    disconnect(serial,&QSerialPort::readyRead,this,&ReadSerialData::onReceiveData);
+//    disconnect(serial,&QSerialPort::readyRead,this,&ReadSerialData::onReceiveData);
     emit DataReceived(receiveData);
 }

@@ -74,10 +74,9 @@ void MainWindow::onModelInserted()
     lowerWidget->scrollToBottom();
 }
 
-void MainWindow::onTablemodelModified(QStandardItem* item)
+void MainWindow::onTablemodelModified(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
 {
-    qDebug()<<item->text();
-
+    
 
 }
 
@@ -259,5 +258,5 @@ void MainWindow::Connection()
     connect(model,&ModelInteract::LoadRecorded,this,&MainWindow::onModelRecordLoaded);
     connect(model,&ModelInteract::InsertNewRecorded,this,&MainWindow::onInserNewRecorded);
     connect(tableModel,&QStandardItemModel::rowsInserted,this,&MainWindow::onModelInserted);
-    connect(tableModel,&QStandardItemModel::itemChanged,this,&MainWindow::onTablemodelModified);
+    connect(tableModel,&QStandardItemModel::dataChanged,this,&MainWindow::onTablemodelModified);
 }

@@ -33,7 +33,7 @@ public slots:
     void onModelRecordLoaded();
     void onInserNewRecorded(ReceivedData data);
     void onModelInserted();
-    void onTablemodelModified(QStandardItem* item);
+    void onTablemodelModified(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
 private:
     //database
     ModelInteract* model;
