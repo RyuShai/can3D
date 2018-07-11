@@ -21,13 +21,14 @@ public:
     QList<ReceivedData *> getListRecord() const;
     void setListRecord(const QList<ReceivedData *> &value);
     float GetlastID();
+    QString path2db;
 signals:
     void LoadRecorded();
     void InsertNewRecorded(ReceivedData data);
 public slots:
 private:
     QSqlDatabase db;
-    QString path2db;
+
     QList<ReceivedData*> listRecord;
     //function
     //open database, call whenver access db

@@ -3,11 +3,13 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPalette>
-
-
+#include <QFontDatabase>
+#include <Qt3DExtras>
+#include "box.h"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     //init
+    QFontDatabase::addApplicationFont(":/fonts/font2");
     serial = new ReadSerialData();
     model = new ModelInteract;
 
@@ -22,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 qDebug()<<"error ?";
 
-    model->setPath2db("/home/ryu/Documents/Project/Qt/Can3DWiget/can3D.db");
+    model->setPath2db("can3D.db");
     model->LoadRecord();
 
 
@@ -81,9 +83,15 @@ void MainWindow::onTablemodelModified(QStandardItem* item)
 
 }
 
+void MainWindow::onLog()
+{
+
+}
+
 void MainWindow::CreateMenu()
 {
     menuBar = new QMenuBar;
+    menuBar->setNativeMenuBar(false);
     //file
     menu = new QMenu(Config::MENU_TEXT_FILE, this);
     //add portMenu
@@ -99,6 +107,7 @@ void MainWindow::CreateMenu()
     connect(menuExitAction,&QAction::triggered,this,&MainWindow::close);
 
     layout->setMenuBar(menuBar);
+
 }
 
 void MainWindow::CreateLayout()
@@ -195,7 +204,7 @@ void MainWindow::CreateGroupMidLayout()
     //set barcode label
     QLabel *barcodeLabel = new QLabel();
     barcodeLabel->setText("test barcode label");
-    layout->addWidget(barcodeLabel,3,0,1,1);
+    layout->addWidget(barcodeLabel,4,0,1,1);
 
     groupMidLayout->setLayout(layout);
     uperLayout->addWidget(groupMidLayout);
@@ -205,7 +214,40 @@ void MainWindow::CreateGroupMidLayout()
 void MainWindow::CreateGroupRightLayout()
 {
     groupRightLayout = new QWidget();
+    QHBoxLayout *layout = new QHBoxLayout(groupRightLayout);
 
+    //create window 3d
+    Qt3DExtras::Qt3DWindow *view = new Qt3DExtras::Qt3DWindow();
+    view->defaultFrameGraph()->setClearColor(QColor(QRgb(0x4d4d4f)));
+
+    QWidget *container = QWidget::createWindowContainer(view);
+
+    Qt3DCore::QEntity *rootEntity = new Qt3DCore::QEntity();
+
+    //3d camera
+    Qt3DRender::QCamera *cameraEntity = view->camera();
+    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
+    cameraEntity->setPosition(QVector3D(-16, 12, 15.0f));
+    cameraEntity->setUpVector(QVector3D(0, 1, 0));
+    cameraEntity->setViewCenter(QVector3D(0, 0, 0));
+
+    Qt3DExtras::QFirstPersonCameraController *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
+    camController->setCamera(cameraEntity);
+
+
+    Qt3DCore::QEntity *lightEntity = new Qt3DCore::QEntity(rootEntity);
+    Qt3DRender::QPointLight *light = new Qt3DRender::QPointLight(lightEntity);
+    light->setColor("white");
+    light->setIntensity(1);
+    lightEntity->addComponent(light);
+    Qt3DCore::QTransform *lightTransform = new Qt3DCore::QTransform(lightEntity);
+    lightTransform->setTranslation(cameraEntity->position());
+    lightEntity->addComponent(lightTransform);
+
+    Box *box = new Box(rootEntity);
+    view->setRootEntity(rootEntity);
+
+    layout->addWidget(container);
     uperLayout->addWidget(groupRightLayout);
 }
 

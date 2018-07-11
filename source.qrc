@@ -4,6 +4,9 @@
         <file>vshader.glsl</file>
         <file>barcode.png</file>
         <file>logo.png</file>
-        <file>can3D.db</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file alias="font">57-dejavu-sans.conf</file>
+        <file alias="font2">Ubuntu-BI.ttf</file>
     </qresource>
 </RCC>

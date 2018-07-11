@@ -1,6 +1,8 @@
 #include "modelinteract.h"
 #include <QDate>
 #include <QSqlQuery>
+#include <QTemporaryFile>
+#include <QTemporaryDir>
 ModelInteract::ModelInteract(QObject *parent) : QObject(parent)
 {
     db = QSqlDatabase::addDatabase("QSQLITE");

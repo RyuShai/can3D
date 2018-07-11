@@ -34,6 +34,7 @@ public slots:
     void onInserNewRecorded(ReceivedData data);
     void onModelInserted();
     void onTablemodelModified(QStandardItem* item);
+    void onLog();
 private:
     //database
     ModelInteract* model;

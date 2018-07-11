@@ -6,12 +6,11 @@
 
 QT       += core gui sql
 QT += serialport xml
-
+QT += 3dextras
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Can3DWiget
 TEMPLATE = app
-
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -29,13 +28,15 @@ SOURCES += \
     readserialdata.cpp \
     mainwindow.cpp \
     config.cpp \
-    modelinteract.cpp
+    modelinteract.cpp \
+    box.cpp
 
 HEADERS += \
     readserialdata.h \
     config.h \
     mainwindow.h \
-    modelinteract.h
+    modelinteract.h \
+    box.h
 
 FORMS += \
         mainwindow.ui
@@ -43,3 +44,35 @@ FORMS += \
 
 RESOURCES += \
     source.qrc
+
+
+#unix:!macx: LIBS += -L$$PWD/../../../../Qt510static/lib/ -lQt5Core
+
+#INCLUDEPATH += $$PWD/../../../../Qt510static/include
+#DEPENDPATH += $$PWD/../../../../Qt510static/include
+
+#unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../Qt510static/lib/libQt5Core.a
+
+#unix:!macx: LIBS += -L$$PWD/../../../../Qt510static/lib/ -lQt5Multimedia
+
+#INCLUDEPATH += $$PWD/../../../../Qt510static/include
+#DEPENDPATH += $$PWD/../../../../Qt510static/include
+
+#unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../Qt510static/lib/libQt5Multimedia.a
+
+#unix:!macx: LIBS += -L$$PWD/../../../../Qt510static/lib/ -lQt5SerialPort
+
+#INCLUDEPATH += $$PWD/../../../../Qt510static/include
+#DEPENDPATH += $$PWD/../../../../Qt510static/include
+
+#unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../Qt510static/lib/libQt5SerialPort.a
+
+#unix:!macx: LIBS += -L$$PWD/../../../../Qt510static/lib/ -lQt5Gui
+
+#INCLUDEPATH += $$PWD/../../../../Qt510static/include
+#DEPENDPATH += $$PWD/../../../../Qt510static/include
+
+#unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../Qt510static/lib/libQt5Gui.a
+
+DISTFILES += \
+    can3D.db
