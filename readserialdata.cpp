@@ -3,6 +3,7 @@
 #include <QThread>
 #include <QDomDocument>
 #include <QDate>
+#include <QString>
 ReadSerialData::ReadSerialData()
 {
     qDebug("start");
@@ -35,8 +36,9 @@ void ReadSerialData::onReceiveData()
     data += serial->readAll();
     if(data.contains("\n"))
     {
-        Log("data: "+data);
-        ConvertSerialData(data);
+
+//        Log("data: "+data);
+        ConvertSerialDataText(data);
         data="";
     }
 }
@@ -129,5 +131,19 @@ void ReadSerialData::ConvertSerialData(QString data)
     receiveData.date = QDate::currentDate().toString("dd-MM-yyyy");
     receiveData.toString();
 //    disconnect(serial,&QSerialPort::readyRead,this,&ReadSerialData::onReceiveData);
+    emit DataReceived(receiveData);
+}
+
+void ReadSerialData::ConvertSerialDataText(QString data)
+{
+    data.remove(QString("#\n"));
+    qDebug()<<"data1: "<<data;
+    QStringList listData= data.split(',');
+    receiveData.width = ((QString)listData.at(0)).toFloat();
+    receiveData.depth = ((QString)listData.at(1)).toFloat();
+    receiveData.height = ((QString)listData.at(2)).toFloat();
+    receiveData.weight = ((QString)listData.at(3)).toFloat();
+    receiveData.barcode = ((QString)listData.at(4)).toFloat();
+    receiveData.date = QDate::currentDate().toString("dd-MM-yyyy");
     emit DataReceived(receiveData);
 }

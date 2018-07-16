@@ -50,10 +50,12 @@ private:
     QBoxLayout *layout;
     QHBoxLayout *uperLayout;
     QBoxLayout *lowerLayout;
+    QLayout *rootHLayout;
     QWidget *groupLeftLayout;
     QWidget *groupMidLayout;
     QWidget *groupRightLayout;
     QWidget *widget;
+    QWidget *lefttWidget;
     QWidget *uperWidget;
     QTableView *lowerWidget;
     QStandardItemModel* tableModel;

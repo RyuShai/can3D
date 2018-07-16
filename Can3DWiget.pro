@@ -7,6 +7,7 @@
 QT       += core gui sql
 QT += serialport xml
 QT += 3dextras
+QT += 3drender
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Can3DWiget

@@ -39,7 +39,7 @@ namespace Config {
 //object size
 //unit pixel
 static int WINDOW_HEIGHT = 600 ;
-static int WINDO_WIDTH = 1068 ;
+static int WINDO_WIDTH = 1300 ;
 
 //upper left group
 static int LEFT_GROUP_WIDTH = 300;

@@ -4,6 +4,7 @@
         <file>vshader.glsl</file>
         <file>barcode.png</file>
         <file>logo.png</file>
+        <file alias="Can">Can_3D.obj</file>
     </qresource>
     <qresource prefix="/fonts">
         <file alias="font">57-dejavu-sans.conf</file>

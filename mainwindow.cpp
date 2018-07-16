@@ -14,18 +14,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     model = new ModelInteract;
 
     CreateLayout();
-    CreateMenu();
-    CreateGroupLeftLayout();
-    CreateGroupMidLayout();
     CreateGroupRightLayout();
-    CreateLowerLayout();
+//    CreateMenu();
+//    CreateGroupLeftLayout();
+//    CreateGroupMidLayout();
 
-     Connection();
+//    CreateLowerLayout();
 
-qDebug()<<"error ?";
+//     Connection();
 
-    model->setPath2db("can3D.db");
-    model->LoadRecord();
+////qDebug()<<"error ?";
+
+//    model->setPath2db("can3D.db");
+//    model->LoadRecord();
 
 
 }
@@ -106,13 +107,16 @@ void MainWindow::CreateMenu()
     //connect signal=slot
     connect(menuExitAction,&QAction::triggered,this,&MainWindow::close);
 
-    layout->setMenuBar(menuBar);
+    rootHLayout->setMenuBar(menuBar);
 
 }
 
 void MainWindow::CreateLayout()
 {
     widget = new QWidget;
+    lefttWidget = new QWidget;
+    lefttWidget->setFixedSize(800,600);
+    rootHLayout = new QHBoxLayout();
     layout = new QVBoxLayout;
 
     uperWidget = new QWidget;
@@ -122,12 +126,18 @@ void MainWindow::CreateLayout()
 
     lowerWidget = new QTableView;
     lowerLayout = new QHBoxLayout;
+    lowerLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    lowerWidget->resize(500,600);
     lowerWidget->setLayout(lowerLayout);
 
     layout->addWidget(uperWidget);
     layout->addWidget(lowerWidget);
 
-    widget->setLayout(layout);
+
+
+    lefttWidget->setLayout(layout);
+    rootHLayout->addWidget(lefttWidget);
+    widget->setLayout(rootHLayout);
     setCentralWidget(widget);
 }
 
@@ -214,6 +224,7 @@ void MainWindow::CreateGroupMidLayout()
 void MainWindow::CreateGroupRightLayout()
 {
     groupRightLayout = new QWidget();
+//    groupRightLayout->setFixedSize(300,600);
     QHBoxLayout *layout = new QHBoxLayout(groupRightLayout);
 
     //create window 3d
@@ -229,7 +240,8 @@ void MainWindow::CreateGroupRightLayout()
     cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
     cameraEntity->setPosition(QVector3D(-16, 12, 15.0f));
     cameraEntity->setUpVector(QVector3D(0, 1, 0));
-    cameraEntity->setViewCenter(QVector3D(0, 0, 0));
+    cameraEntity->setViewCenter(QVector3D(0,0, 0));
+
 
     Qt3DExtras::QFirstPersonCameraController *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
     camController->setCamera(cameraEntity);
@@ -244,11 +256,14 @@ void MainWindow::CreateGroupRightLayout()
     lightTransform->setTranslation(cameraEntity->position());
     lightEntity->addComponent(lightTransform);
 
+    qDebug()<<"start";
     Box *box = new Box(rootEntity);
+    qDebug()<<"end";
     view->setRootEntity(rootEntity);
 
     layout->addWidget(container);
-    uperLayout->addWidget(groupRightLayout);
+    groupRightLayout->setStyleSheet("background-color:red");
+    rootHLayout->addWidget(groupRightLayout);
 }
 
 void MainWindow::CreateLowerLayout()
@@ -258,7 +273,7 @@ void MainWindow::CreateLowerLayout()
     tableModel->setHorizontalHeaderLabels(QStringList()<<"id"<<"width"<<"height"<<"depth"<<"weight"<<"volume"<<"density"<<"barcode"<<"date");
     lowerWidget->setModel(tableModel);
     lowerWidget->verticalHeader()->hide();
-    lowerWidget->horizontalHeader()->setStretchLastSection(true);
+//    lowerWidget->horizontalHeader()->setStretchLastSection(true);
 //    lowerLayout->addWidget(lowerWidget);
 }
 

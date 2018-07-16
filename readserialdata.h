@@ -29,6 +29,7 @@ public:
                       QSerialPort::StopBits stopbits = QSerialPort::OneStop);
     void CloseConnection();
     void ConvertSerialData(QString data);
+    void ConvertSerialDataText(QString data);
     ReceivedData receiveData;
 signals:
     void DataReceived(ReceivedData receiveData);
