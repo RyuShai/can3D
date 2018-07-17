@@ -143,7 +143,7 @@ void ReadSerialData::ConvertSerialDataText(QString data)
     receiveData.depth = ((QString)listData.at(1)).toFloat();
     receiveData.height = ((QString)listData.at(2)).toFloat();
     receiveData.weight = ((QString)listData.at(3)).toFloat();
-    receiveData.barcode = ((QString)listData.at(4)).toFloat();
+    receiveData.barcode = ((QString)listData.at(4));
     receiveData.date = QDate::currentDate().toString("dd-MM-yyyy");
     emit DataReceived(receiveData);
 }

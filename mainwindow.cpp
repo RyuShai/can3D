@@ -5,7 +5,7 @@
 #include <QPalette>
 #include <QFontDatabase>
 #include <Qt3DExtras>
-#include "box.h"
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     //init
@@ -15,18 +15,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     CreateLayout();
     CreateGroupRightLayout();
-//    CreateMenu();
-//    CreateGroupLeftLayout();
-//    CreateGroupMidLayout();
+    CreateMenu();
+    CreateGroupLeftLayout();
+    CreateGroupMidLayout();
 
-//    CreateLowerLayout();
+    CreateLowerLayout();
 
-//     Connection();
+     Connection();
 
-////qDebug()<<"error ?";
+//qDebug()<<"error ?";
 
-//    model->setPath2db("can3D.db");
-//    model->LoadRecord();
+    model->setPath2db("can3D.db");
+    model->LoadRecord();
 
 
 }
@@ -47,6 +47,7 @@ void MainWindow::onPortSelected()
 
 void MainWindow::onReceivedData(ReceivedData data)
 {
+    data.toString();
     Log("widget size: "<<groupLeftLayout->layout()->count());
     groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_HEIGHT)->setText(QString::number(data.height));
     groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_WIDTH)->setText(QString::number(data.width));
@@ -55,6 +56,12 @@ void MainWindow::onReceivedData(ReceivedData data)
     groupLeftLayout->findChild<QLabel *>(Config::FORM_TEXT_VOLUME)->setText(QString::number(CalVolume(data.width,data.height,data.depth)));
 
     model->InserRecord(data);
+    if(data.height !=box->cuboid->yExtent())
+        box->cuboid->setYExtent(data.height);
+    if(data.width !=box->cuboid->xExtent())
+        box->cuboid->setXExtent(data.width);
+    if(data.depth !=box->cuboid->zExtent())
+        box->cuboid->setZExtent(data.depth);
 }
 
 void MainWindow::onModelRecordLoaded()
@@ -87,6 +94,16 @@ void MainWindow::onTablemodelModified(QStandardItem* item)
 void MainWindow::onLog()
 {
 
+}
+
+void MainWindow::onpositionChanged(const QVector3D &position)
+{
+    qDebug()<<"position: "<<position;
+}
+
+void MainWindow::onviewCenterChanged(const QVector3D &viewCenter)
+{
+    qDebug()<<"viewcenter: "<<viewCenter;
 }
 
 void MainWindow::CreateMenu()
@@ -238,10 +255,16 @@ void MainWindow::CreateGroupRightLayout()
     //3d camera
     Qt3DRender::QCamera *cameraEntity = view->camera();
     cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
-    cameraEntity->setPosition(QVector3D(-16, 12, 15.0f));
+    cameraEntity->setPosition(QVector3D(16.3298, 14.8403, 18.8122));
     cameraEntity->setUpVector(QVector3D(0, 1, 0));
-    cameraEntity->setViewCenter(QVector3D(0,0, 0));
+    cameraEntity->setViewCenter(QVector3D(0.828393, 1.60774, -0.308398));
 
+    ///////////////////////
+    /// \brief camController
+    connect(cameraEntity,&Qt3DRender::QCamera::positionChanged,this,&MainWindow::onpositionChanged);
+    connect(cameraEntity,&Qt3DRender::QCamera::viewCenterChanged,this,&MainWindow::onviewCenterChanged);
+    //////////////////////////
+    ///
 
     Qt3DExtras::QFirstPersonCameraController *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
     camController->setCamera(cameraEntity);
@@ -257,7 +280,7 @@ void MainWindow::CreateGroupRightLayout()
     lightEntity->addComponent(lightTransform);
 
     qDebug()<<"start";
-    Box *box = new Box(rootEntity);
+    box = new Box(rootEntity);
     qDebug()<<"end";
     view->setRootEntity(rootEntity);
 

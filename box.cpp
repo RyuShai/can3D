@@ -1,19 +1,25 @@
 #include "box.h"
 
-#include <QUrl>
+
 Box::Box(Qt3DCore::QEntity *root)
 {
 
     // Cuboid shape data
-    Qt3DExtras::QCuboidMesh *cuboid = new Qt3DExtras::QCuboidMesh();
-    cuboid->setXExtent(3);
-    cuboid->setYExtent(1);
-    cuboid->setZExtent(1);
+    cuboid = new Qt3DExtras::QCuboidMesh();
+
     // CuboidMesh Transform
     cuboidTransform = new Qt3DCore::QTransform();
 //    cuboidTransform->setScale(3.0f);
-    cuboidTransform->setTranslation(QVector3D(-2.05f, 0.5f, 1.45f));
-    cuboidTransform->setRotationY(-10);
+//    cuboidTransform->setTranslation(QVector3D(0.8f, 0.4f, 0.8f));
+    cuboid->setXExtent(4.5);
+    cuboid->setYExtent(7.5);
+    cuboid->setZExtent(2);
+    cuboidTransform->setTranslation(QVector3D(0.85+(cuboid->xExtent()-1)*0.5,1.5+(cuboid->yExtent()-1)*0.5, 0.8+(cuboid->zExtent()-1)*0.5));
+    connect(cuboid,&Qt3DExtras::QCuboidMesh::xExtentChanged,this,&Box::onCubicPositionChange);
+    connect(cuboid,&Qt3DExtras::QCuboidMesh::yExtentChanged,this,&Box::onCubicPositionChange);
+    connect(cuboid,&Qt3DExtras::QCuboidMesh::zExtentChanged,this,&Box::onCubicPositionChange);
+//    cuboidTransform->setRotationY(-0);
+    //1-1.4,2-2.0,3-2.6,5-3.5
 
     Qt3DExtras::QPhongMaterial *cuboidMaterial = new Qt3DExtras::QPhongMaterial();
     cuboidMaterial->setDiffuse(QColor(132,37,147));
@@ -30,9 +36,9 @@ Box::Box(Qt3DCore::QEntity *root)
 
     // CuboidMesh Transform
     canTranform = new Qt3DCore::QTransform();
-    canTranform->setScale(0.01f);
-    canTranform->setTranslation(QVector3D(0.0f, -2.0f, 0.0f));
-    canTranform->setRotationY(-5);
+    canTranform->setScale(0.011f);
+    canTranform->setTranslation(QVector3D(0.0f, 0.0f, 0.0f));
+//    canTranform->setRotationY(0);
 
     canEntity = new Qt3DCore::QEntity(root);
     canEntity->addComponent(canMesh);
@@ -52,4 +58,10 @@ void Box::PrintLog()
 
         qDebug()<<cuboidTransform->rotationX() <<" "<<cuboidTransform->rotationY()<<" "<<cuboidTransform->rotationZ();
 
+}
+
+void Box::onCubicPositionChange()
+{
+    qDebug()<<"extent:"<<cuboid->xExtent() <<" "<<cuboid->yExtent()<<" "<<cuboid->zExtent();
+    cuboidTransform->setTranslation(QVector3D(0.85+(cuboid->xExtent()-1)*0.5,1.5+(cuboid->yExtent()-1)*0.5, 0.8+(cuboid->zExtent()-1)*0.5));
 }

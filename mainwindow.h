@@ -16,6 +16,7 @@
 #include "config.h"
 #include "readserialdata.h"
 #include "modelinteract.h"
+#include "box.h"
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -35,6 +36,8 @@ public slots:
     void onModelInserted();
     void onTablemodelModified(QStandardItem* item);
     void onLog();
+    void onpositionChanged(const QVector3D &position);
+    void onviewCenterChanged(const QVector3D &viewCenter);
 private:
     //database
     ModelInteract* model;
@@ -59,7 +62,7 @@ private:
     QWidget *uperWidget;
     QTableView *lowerWidget;
     QStandardItemModel* tableModel;
-
+    Box *box;
 
     //function
     void CreateMenu();
