@@ -54,13 +54,14 @@ private:
     QHBoxLayout *uperLayout;
     QBoxLayout *lowerLayout;
     QLayout *rootHLayout;
-    QWidget *groupLeftLayout;
+    QWidget *groupLeftWidget;
     QWidget *groupMidLayout;
     QWidget *groupRightLayout;
+    QVBoxLayout *rightlayout;
     QWidget *widget;
     QWidget *lefttWidget;
     QWidget *uperWidget;
-    QTableView *lowerWidget;
+    QTableView *lowerTableView;
     QStandardItemModel* tableModel;
     Box *box;
 

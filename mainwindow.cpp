@@ -5,6 +5,7 @@
 #include <QPalette>
 #include <QFontDatabase>
 #include <Qt3DExtras>
+#include <QBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -48,12 +49,12 @@ void MainWindow::onPortSelected()
 void MainWindow::onReceivedData(ReceivedData data)
 {
     data.toString();
-    Log("widget size: "<<groupLeftLayout->layout()->count());
-    groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_HEIGHT)->setText(QString::number(data.height));
-    groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_WIDTH)->setText(QString::number(data.width));
-    groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_DEPTH)->setText(QString::number(data.depth));
-    groupLeftLayout->findChild<QLineEdit *>(Config::FORM_TEXT_WEIGHT)->setText(QString::number(data.weight));
-    groupLeftLayout->findChild<QLabel *>(Config::FORM_TEXT_VOLUME)->setText(QString::number(CalVolume(data.width,data.height,data.depth)));
+    Log("widget size: "<<groupLeftWidget->layout()->count());
+    groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_HEIGHT)->setText(QString::number(data.height));
+    groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_WIDTH)->setText(QString::number(data.width));
+    groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_DEPTH)->setText(QString::number(data.depth));
+    groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_WEIGHT)->setText(QString::number(data.weight));
+    groupLeftWidget->findChild<QLabel *>(Config::FORM_TEXT_VOLUME)->setText(QString::number(CalVolume(data.width,data.height,data.depth)));
 
     model->InserRecord(data);
     if(data.height !=box->cuboid->yExtent())
@@ -81,7 +82,7 @@ void MainWindow::onInserNewRecorded(ReceivedData data)
 
 void MainWindow::onModelInserted()
 {
-    lowerWidget->scrollToBottom();
+    lowerTableView->scrollToBottom();
 }
 
 void MainWindow::onTablemodelModified(QStandardItem* item)
@@ -141,14 +142,14 @@ void MainWindow::CreateLayout()
     uperLayout->setSizeConstraint(QLayout::SetMinimumSize);
     uperWidget->setLayout(uperLayout);
 
-    lowerWidget = new QTableView;
+    lowerTableView = new QTableView;
     lowerLayout = new QHBoxLayout;
     lowerLayout->setSizeConstraint(QLayout::SetMinimumSize);
-    lowerWidget->resize(500,600);
-    lowerWidget->setLayout(lowerLayout);
+    lowerTableView->resize(500,400);
+    lowerTableView->setLayout(lowerLayout);
 
     layout->addWidget(uperWidget);
-    layout->addWidget(lowerWidget);
+    layout->addWidget(lowerTableView);
 
 
 
@@ -163,10 +164,10 @@ void MainWindow::CreateGroupLeftLayout()
     ///left layout incluude:
     /// height,width, depth, weight
     /// It form layout
-    groupLeftLayout = new QWidget;
-    groupLeftLayout->setStyleSheet("background-color:yellow");
-    groupLeftLayout->setFixedSize(Config::LEFT_GROUP_WIDTH,Config::LEFT_GROUP_HEIGHT);
-
+    groupLeftWidget = new QWidget;
+//    groupLeftWidget-
+    groupLeftWidget->setFixedSize(Config::LEFT_GROUP_WIDTH,Config::LEFT_GROUP_HEIGHT);
+    groupLeftWidget->setStyleSheet("QWidget#QWidget border: 1px solid black");
     QGridLayout *gridLayout = new QGridLayout;
     gridLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
@@ -194,21 +195,27 @@ void MainWindow::CreateGroupLeftLayout()
     gridLayout->addWidget(leWeight);
     gridLayout->addWidget(new QLabel(Config::UNIT_WEIGHT));
 
-    gridLayout->addWidget(new QLabel(Config::FORM_TEXT_VOLUME));
-    QLabel * lblVolumne = new QLabel();
+    gridLayout->addWidget(new QLabel(Config::FORM_TEXT_VOLUME),0,3,1,1);
+    QLineEdit * lblVolumne = new QLineEdit();
     lblVolumne->setObjectName(Config::FORM_TEXT_VOLUME);
-    gridLayout->addWidget(lblVolumne);
-    gridLayout->addWidget(new QLabel(Config::UNIT_VOLUME));
+    gridLayout->addWidget(lblVolumne,0,4,1,1);
+    gridLayout->addWidget(new QLabel(Config::UNIT_VOLUME),0,6,1,1);
 
-    gridLayout->addWidget(new QLabel(Config::FORM_TEXT_DENSITY));
-    QLabel *lblDensity = new QLabel();
+    gridLayout->addWidget(new QLabel(Config::FORM_TEXT_DENSITY),2,3,1,1);
+    QLineEdit *lblDensity = new QLineEdit();
     lblDensity->setObjectName(Config::FORM_TEXT_DENSITY);
-    gridLayout->addWidget(lblDensity);
-    gridLayout->addWidget(new QLabel(Config::UNIT_DENSITY));
+    gridLayout->addWidget(lblDensity,2,4,1,1);
+    gridLayout->addWidget(new QLabel(Config::UNIT_DENSITY),2,5,1,1);
+
+    //update 26/7/18
+    QWidget *rootLeftWidget = new QWidget;
+    QHBoxLayout *rootLeftWidgetLayout = new QHBoxLayout;
+
+    groupLeftWidget->setLayout(gridLayout);
+    uperLayout->addWidget(groupLeftWidget);
 
 
-    groupLeftLayout->setLayout(gridLayout);
-    uperLayout->addWidget(groupLeftLayout);
+
 
 }
 
@@ -234,7 +241,7 @@ void MainWindow::CreateGroupMidLayout()
     layout->addWidget(barcodeLabel,4,0,1,1);
 
     groupMidLayout->setLayout(layout);
-    uperLayout->addWidget(groupMidLayout);
+    rightlayout->insertWidget(0,groupMidLayout);
 
 }
 
@@ -242,7 +249,7 @@ void MainWindow::CreateGroupRightLayout()
 {
     groupRightLayout = new QWidget();
 //    groupRightLayout->setFixedSize(300,600);
-    QHBoxLayout *layout = new QHBoxLayout(groupRightLayout);
+    rightlayout = new QVBoxLayout(groupRightLayout);
 
     //create window 3d
     Qt3DExtras::Qt3DWindow *view = new Qt3DExtras::Qt3DWindow();
@@ -284,8 +291,8 @@ void MainWindow::CreateGroupRightLayout()
     qDebug()<<"end";
     view->setRootEntity(rootEntity);
 
-    layout->addWidget(container);
-    groupRightLayout->setStyleSheet("background-color:red");
+    rightlayout->addWidget(container);
+    container->setStyleSheet(" border: 1px solid white");
     rootHLayout->addWidget(groupRightLayout);
 }
 
@@ -294,8 +301,9 @@ void MainWindow::CreateLowerLayout()
 //    lowerWidget = new QTableView;
     tableModel = new QStandardItemModel;
     tableModel->setHorizontalHeaderLabels(QStringList()<<"id"<<"width"<<"height"<<"depth"<<"weight"<<"volume"<<"density"<<"barcode"<<"date");
-    lowerWidget->setModel(tableModel);
-    lowerWidget->verticalHeader()->hide();
+    lowerTableView->setModel(tableModel);
+    lowerTableView->verticalHeader()->hide();
+    lowerTableView->setFixedHeight(400);
 //    lowerWidget->horizontalHeader()->setStretchLastSection(true);
 //    lowerLayout->addWidget(lowerWidget);
 }

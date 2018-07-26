@@ -42,8 +42,8 @@ static int WINDOW_HEIGHT = 600 ;
 static int WINDO_WIDTH = 1300 ;
 
 //upper left group
-static int LEFT_GROUP_WIDTH = 300;
-static int LEFT_GROUP_HEIGHT = 200;
+static int LEFT_GROUP_WIDTH = 800;
+static int LEFT_GROUP_HEIGHT = 600;
 
 //uper mid group
 static int MID_GROUP_WIDTH = 300;
