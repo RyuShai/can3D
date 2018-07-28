@@ -6,6 +6,7 @@
 #include <QFontDatabase>
 #include <Qt3DExtras>
 #include <QBoxLayout>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
@@ -53,8 +54,8 @@ void MainWindow::onReceivedData(ReceivedData data)
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_HEIGHT)->setText(QString::number(data.height));
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_WIDTH)->setText(QString::number(data.width));
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_DEPTH)->setText(QString::number(data.depth));
-    groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_WEIGHT)->setText(QString::number(data.weight));
-    groupLeftWidget->findChild<QLabel *>(Config::FORM_TEXT_VOLUME)->setText(QString::number(CalVolume(data.width,data.height,data.depth)));
+//    groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_WEIGHT)->setText(QString::number(data.weight));
+//    groupLeftWidget->findChild<QLabel *>(Config::FORM_TEXT_VOLUME)->setText(QString::number(CalVolume(data.width,data.height,data.depth)));
 
     model->InserRecord(data);
     if(data.height !=box->cuboid->yExtent())
@@ -105,6 +106,12 @@ void MainWindow::onpositionChanged(const QVector3D &position)
 void MainWindow::onviewCenterChanged(const QVector3D &viewCenter)
 {
     qDebug()<<"viewcenter: "<<viewCenter;
+}
+
+void MainWindow::onTestBtnClicked()
+{
+    qDebug()<<Q_FUNC_INFO<<endl;
+    serial->SendData();
 }
 
 void MainWindow::CreateMenu()
@@ -207,6 +214,9 @@ void MainWindow::CreateGroupLeftLayout()
     gridLayout->addWidget(lblDensity,2,4,1,1);
     gridLayout->addWidget(new QLabel(Config::UNIT_DENSITY),2,5,1,1);
 
+    QPushButton *btn = new QPushButton("test");
+    connect(btn,&QPushButton::clicked,this,&MainWindow::onTestBtnClicked);
+    gridLayout->addWidget(btn,3,4,1,1);
     //update 26/7/18
     QWidget *rootLeftWidget = new QWidget;
     QHBoxLayout *rootLeftWidgetLayout = new QHBoxLayout;

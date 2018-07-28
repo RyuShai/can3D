@@ -38,6 +38,7 @@ public slots:
     void onLog();
     void onpositionChanged(const QVector3D &position);
     void onviewCenterChanged(const QVector3D &viewCenter);
+    void onTestBtnClicked();
 private:
     //database
     ModelInteract* model;

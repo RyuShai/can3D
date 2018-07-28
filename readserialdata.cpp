@@ -34,11 +34,12 @@ void ReadSerialData::onReceiveData()
 {
     //convert data to readable
     data += serial->readAll();
+
     if(data.contains("\n"))
     {
-
+        qDebug()<<"rawData: "<<data;
 //        Log("data: "+data);
-        ConvertSerialDataText(data);
+        ConvertSerialData(data);
         data="";
     }
 }
@@ -108,11 +109,17 @@ void ReadSerialData::ConvertSerialData(QString data)
 
     QDomNode n = docElem.firstChild();
     while(!n.isNull()) {
+        qDebug("n !Null");
         QDomElement e = n.toElement(); // try to convert the node to an element.
         if(!e.isNull()) {
-            qDebug() << qPrintable(e.tagName()) << e.text()<<endl; // the node really is an element.
+            qDebug("e!NULL");
+            qDebug() <<"eTag: "<<e.tagName()<<" "<<e.text(); // the node really is an elemee.nt.
             if(e.tagName()==Config::WIDTH)
+            {
+                qDebug("e.WIDTH");
                 receiveData.width = e.text().toFloat();
+            }
+
             else if(e.tagName()==Config::HEIGHT)
                 receiveData.height = e.text().toFloat();
             else if(e.tagName() == Config::DEPTH)
@@ -131,6 +138,7 @@ void ReadSerialData::ConvertSerialData(QString data)
     receiveData.date = QDate::currentDate().toString("dd-MM-yyyy");
     receiveData.toString();
 //    disconnect(serial,&QSerialPort::readyRead,this,&ReadSerialData::onReceiveData);
+    qDebug("before update");
     emit DataReceived(receiveData);
 }
 
@@ -146,4 +154,10 @@ void ReadSerialData::ConvertSerialDataText(QString data)
     receiveData.barcode = ((QString)listData.at(4));
     receiveData.date = QDate::currentDate().toString("dd-MM-yyyy");
     emit DataReceived(receiveData);
+}
+
+void ReadSerialData::SendData()
+{
+
+    serial->write("*1.0,2.0,3.1,4.2,5.6,6.7,7.8,9.1#");
 }

@@ -79,13 +79,13 @@ static QString UNIT_VOLUME = "cm^3";
 static QString UNIT_DENSITY = "gam/cm3";
 
 //enum
-static QString WIDTH="width";
-static QString HEIGHT="height";
-static QString DEPTH="depth";
-static QString WEIGHT="weight";
-static QString VOLUME="volume";
+static QString WIDTH="Width";
+static QString HEIGHT="Height";
+static QString DEPTH="Length";
+static QString WEIGHT="Weight";
+static QString VOLUME="Volume";
 static QString DENSITY="density";
-static QString BARCODE="barcode";
+static QString BARCODE="Barcode";
 
 }
 
