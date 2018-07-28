@@ -13,12 +13,32 @@ ModelInteract::ModelInteract(QObject *parent) : QObject(parent)
 bool ModelInteract::OpenDatabase()
 {
     Log(path2db);
+    bool dbExist = QFile(path2db).exists();
+
     db.setDatabaseName(path2db);
     if(!db.open())
     {
+
         Log("open database failed");
         return false;
     }
+    if(!dbExist)
+    {
+        qDebug()<<"dbexist: "<<dbExist;
+        QSqlQuery query;
+        query.exec("CREATE TABLE `Can` ("
+                   "`ID`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,"
+                   "`width`	INTEGER,"
+                   "`height`	INTEGER,"
+                   "`depth`	INTEGER,"
+                   "`volume`	INTEGER,"
+                   "`weight`	INTEGER,"
+                   "`density`	INTEGER,"
+                   "`barcode`	TEXT,"
+                   "`time`	TEXT"
+               ")");
+    }
+
     return true;
 }
 
@@ -44,14 +64,14 @@ bool ModelInteract::InserRecord(float width, float height, float depth, float we
 
 bool ModelInteract::InserRecord(ReceivedData data)
 {
-    Log("barcode: "+data.barcode+ " date: "+data.date);
+//    Log("barcode: "+data.barcode+ " date: "+data.date);
     OpenDatabase();
     QString insertQuery = "INSERT INTO Can (width,height,depth,volume,weight,density,barcode, time) "
                           "VALUES ("+QString::number(data.width)+","+QString::number(data.height)+","+QString::number(data.depth)+
             ","+QString::number(data.volume)+","+QString::number(data.weight)+","+QString::number(data.density)+",'"+data.barcode+"','"+(data.date=QDate::currentDate().toString("dd-MM-yyyy"))+"')";
 
 //    QString insertQuery = "INSERT INTO Can (width,height,depth,volume,weight,density,barcode, time) VALUES (4.5,7.5,5,0,3,0,'\u0000','18-07-2018')";
-    qDebug().noquote()<<insertQuery;
+//    qDebug().noquote()<<insertQuery;
     QSqlQuery query;
     if(!query.exec(insertQuery))
         Log("insert to database failed");
@@ -92,7 +112,7 @@ bool ModelInteract::LoadRecord()
         record->density = query.value("density").toFloat();
         record->barcode = query.value("barcode").toString();
         record->date = query.value("time").toString();
-        record->toString();
+//        record->toString();
         listRecord.append(record);
     }
     CloseDatabase();

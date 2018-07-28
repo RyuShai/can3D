@@ -30,7 +30,7 @@ public:
     void CloseConnection();
     void ConvertSerialData(QString data);
     void ConvertSerialDataText(QString data);
-    void SendData();
+    void SendData(QString cmd);
     ReceivedData receiveData;
 signals:
     void DataReceived(ReceivedData receiveData);

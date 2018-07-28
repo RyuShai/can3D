@@ -7,9 +7,11 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_DontUseNativeMenuBar);
+
         MainWindow w;
+        w.setWindowIcon(QIcon(":/logo"));
         w.setWindowTitle(Config::MAIN_WINDOW_TITLE);
-        w.resize(Config::WINDO_WIDTH,Config::WINDOW_HEIGHT);
+//        w.resize(Config::WINDO_WIDTH,Config::WINDOW_HEIGHT);
         w.show();
 
 

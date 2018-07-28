@@ -39,20 +39,24 @@ namespace Config {
 //object size
 //unit pixel
 static int WINDOW_HEIGHT = 600 ;
-static int WINDO_WIDTH = 1300 ;
+static int WINDO_WIDTH = 800 ;
 
 //upper left group
-static int LEFT_GROUP_WIDTH = 800;
-static int LEFT_GROUP_HEIGHT = 600;
-
+static int LEFT_GROUP_WIDTH = 300;
+static int LEFT_GROUP_HEIGHT = 350;
+static int ROOT_LEFT_GROUP_WIDTH = 620;
 //uper mid group
 static int MID_GROUP_WIDTH = 300;
 static int MID_GROUP_HEIGHT = 300;
 
-static  int LOGO_WIDTH = 80;
+static  int LOGO_WIDTH = 300;
 static  int LOGO_HEIGHT = 80;
 static int BARCODE_WIDTH = 160;
 static int BARCODE_HEIGHT = 80;
+
+static int LINE_EDIT_WIDTH = 100;
+static int LABEL_FONT_SIZE = 18;
+static int EDIT_FONT_SIZE = 18;
 
 
 
@@ -70,7 +74,7 @@ static QString FORM_TEXT_HEIGHT = "Height";
 static QString FORM_TEXT_WIDTH  = "Width";
 static QString FORM_TEXT_DEPTH = "Depth";
 static QString FORM_TEXT_WEIGHT = "Weight";
-static QString FORM_TEXT_VOLUME = "Volume";
+static QString FORM_TEXT_VOLUME = "Volume-weight";
 static QString FORM_TEXT_DENSITY = "Density";
 
 static QString UNIT_LENGTH = "cm";

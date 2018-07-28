@@ -62,6 +62,6 @@ void Box::PrintLog()
 
 void Box::onCubicPositionChange()
 {
-    qDebug()<<"extent:"<<cuboid->xExtent() <<" "<<cuboid->yExtent()<<" "<<cuboid->zExtent();
+//    qDebug()<<"extent:"<<cuboid->xExtent() <<" "<<cuboid->yExtent()<<" "<<cuboid->zExtent();
     cuboidTransform->setTranslation(QVector3D(0.85+(cuboid->xExtent()-1)*0.5,1.5+(cuboid->yExtent()-1)*0.5, 0.8+(cuboid->zExtent()-1)*0.5));
 }

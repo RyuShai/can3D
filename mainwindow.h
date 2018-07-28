@@ -13,6 +13,7 @@
 #include <QStandardItem>
 #include <QTableView>
 #include <QHeaderView>
+#include <QKeyEvent>
 #include "config.h"
 #include "readserialdata.h"
 #include "modelinteract.h"
@@ -66,6 +67,8 @@ private:
     QStandardItemModel* tableModel;
     Box *box;
 
+    QLineEdit * leVolumne ;
+    QLineEdit *leWeight;
     //function
     void CreateMenu();
     void CreateLayout();
@@ -78,6 +81,8 @@ private:
     float CalVolume(float w, float h, float d);
 
     void Connection();
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 };
 
 #endif // MAINWINDOW_H
