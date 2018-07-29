@@ -24,9 +24,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     CreateLowerLayout();
 
-     Connection();
+    Connection();
 
-//qDebug()<<"error ?";
+    //qDebug()<<"error ?";
 
     model->setPath2db(db);
     model->LoadRecord();
@@ -56,8 +56,8 @@ void MainWindow::onReceivedData(ReceivedData data)
         qDebug("must return");
         return;
     }
-        qDebug("not return");
-//    Log("widget size: "<<groupLeftWidget->layout()->count());
+    qDebug("not return");
+    //    Log("widget size: "<<groupLeftWidget->layout()->count());
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_HEIGHT)->setText(QString::number(data.height));
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_WIDTH)->setText(QString::number(data.width));
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_DEPTH)->setText(QString::number(data.depth));
@@ -121,6 +121,61 @@ void MainWindow::onTestBtnClicked()
     serial->SendData("*1.0,2.0,3.1,4.2,5.6,6.7,7.8,9.1#");
 }
 
+void MainWindow::onSendSetupCodeClicked()
+{
+    serial->SendData(Config::SETUP_CODE);
+}
+
+void MainWindow::onTableDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles)
+{
+    qDebug()<<"tl: "<<topLeft.row()<<" "<<topLeft.column()<<" br: "<<bottomRight.column()<<" roles: "<<roles;
+
+    float width = tableModel->data(tableModel->index(topLeft.row(),1)).toFloat();
+    float height =tableModel->data(tableModel->index(topLeft.row(),2)).toFloat();
+    float depth=tableModel->data(tableModel->index(topLeft.row(),3)).toFloat();
+    float weight=tableModel->data(tableModel->index(topLeft.row(),4)).toFloat();
+    float volume=tableModel->data(tableModel->index(topLeft.row(),5)).toFloat();
+    QString barcode=tableModel->data(tableModel->index(topLeft.row(),6)).toString();
+    int id =tableModel->data(tableModel->index(topLeft.row(),0)).toInt();
+    model->UpdateRecord(width,height,depth,weight,volume,0,barcode,id);
+}
+
+void MainWindow::onEditTextEnter()
+{
+    QLineEdit* editer = static_cast<QLineEdit*>(sender());
+    if(editer == leWeight)
+    {
+        qDebug("leWeight");
+        tableModel->setData(tableModel->index(tableModel->rowCount()-1,4),QVariant(leWeight->text()));
+    }
+    else if(editer == leHeight)
+    {
+        qDebug("leHeight");
+        tableModel->setData(tableModel->index(tableModel->rowCount()-1,2),QVariant(leHeight->text()));
+    }
+    else if(editer == leWidth)
+    {
+        qDebug("leWidth");
+        tableModel->setData(tableModel->index(tableModel->rowCount()-1,1),QVariant(leWidth->text()));
+    }
+    else if(editer == leVolumne)
+    {
+        qDebug("leVolumne");
+        tableModel->setData(tableModel->index(tableModel->rowCount()-1,5),QVariant(leVolumne->text()));
+    }
+    else if(editer == leDepth)
+    {
+        qDebug("leDepth");
+        tableModel->setData(tableModel->index(tableModel->rowCount()-1,3),QVariant(leDepth->text()));
+    }
+    else if(editer == barcodeLabel)
+    {
+        qDebug("leDepth");
+        tableModel->setData(tableModel->index(tableModel->rowCount()-1,6),QVariant(barcodeLabel->text()));
+    }
+    tableModel->setData(tableModel->index(tableModel->rowCount()-1,7),QVariant(QDate::currentDate().toString("dd-MM-yyyy")));
+}
+
 void MainWindow::CreateMenu()
 {
     menuBar = new QMenuBar;
@@ -131,14 +186,16 @@ void MainWindow::CreateMenu()
     //add portMenu
     portMenu = menu->addMenu(Config::MENU_TEXT_PORT);
     CreatePortName();
-
-
+    //send setup code action
+    QAction * sendSetupCode = menu->addAction(Config::MENU_TEXT_SEND_SETUP);
     //exit action
     menuExitAction =menu->addAction(Config::MENU_TEXT_EXIT);
+
     menuBar->addMenu(menu);
 
     //connect signal=slot
     connect(menuExitAction,&QAction::triggered,this,&MainWindow::close);
+    connect(sendSetupCode,&QAction::triggered,this,&MainWindow::onSendSetupCodeClicked);
 
     rootHLayout->setMenuBar(menuBar);
 
@@ -148,7 +205,7 @@ void MainWindow::CreateLayout()
 {
     widget = new QWidget;
     widget->installEventFilter(this);
-//    widget->setStyleSheet("background-color: yellow");
+    //    widget->setStyleSheet("background-color: yellow");
     lefttWidget = new QWidget;
     rootHLayout = new QHBoxLayout();
     layout = new QVBoxLayout;
@@ -162,13 +219,13 @@ void MainWindow::CreateLayout()
     uperLayout->setContentsMargins(0,0,0,0);
     uperLayout->setSpacing(0);
     //test
-//    lefttWidget->setStyleSheet("background-color : yellow");
+    //    lefttWidget->setStyleSheet("background-color : yellow");
     //
 
     lowerTableView = new QTableView;
     lowerLayout = new QHBoxLayout;
     lowerLayout->setSizeConstraint(QLayout::SetMinimumSize);
-//    lowerTableView->resize(500,200);
+    //    lowerTableView->resize(500,200);
     lowerTableView->setLayout(lowerLayout);
 
     layout->addWidget(uperWidget);
@@ -201,16 +258,17 @@ void MainWindow::CreateGroupLeftLayout()
     fontEdit.setPointSize(Config::EDIT_FONT_SIZE);
 
     groupLeftWidget = new QWidget;
-//    groupLeftWidget-
+    //    groupLeftWidget-
     groupLeftWidget->setFixedSize(Config::LEFT_GROUP_WIDTH,Config::LEFT_GROUP_HEIGHT);
     groupLeftWidget->setObjectName("groupLeftWidget");
     groupLeftWidget->setStyleSheet("#groupLeftWidget{ border: 1px solid black}");
     QGridLayout *gridLayout = new QGridLayout;
-//    gridLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    //    gridLayout->setSizeConstraint(QLayout::SetMinimumSize);
     QLabel *lblHeight = new QLabel(Config::FORM_TEXT_HEIGHT);
     lblHeight->setFont(font);
     gridLayout->addWidget(lblHeight,0,0,1,1);
-    QLineEdit *leHeight = new QLineEdit();
+    leHeight = new QLineEdit();
+    //    leHeight->installEventFilter(this);
     leHeight->setFont(fontEdit);
     leHeight->setAlignment(Qt::AlignCenter);
     leHeight->setObjectName(Config::FORM_TEXT_HEIGHT);
@@ -223,7 +281,8 @@ void MainWindow::CreateGroupLeftLayout()
     QLabel *lblWidth =new QLabel(Config::FORM_TEXT_WIDTH);
     lblWidth->setFont(font);
     gridLayout->addWidget(lblWidth);
-    QLineEdit *leWidth = new QLineEdit();
+    leWidth = new QLineEdit();
+    //    leWidth->installEventFilter(this);
     leWidth->setAlignment(Qt::AlignCenter);
     leWidth->setFont(fontEdit);
     leWidth->setObjectName(Config::FORM_TEXT_WIDTH);
@@ -236,7 +295,8 @@ void MainWindow::CreateGroupLeftLayout()
     QLabel *lblDepth =new QLabel(Config::FORM_TEXT_DEPTH);
     lblDepth->setFont(font);
     gridLayout->addWidget(lblDepth);
-    QLineEdit *leDepth = new QLineEdit();
+    leDepth = new QLineEdit();
+    //    leDepth->installEventFilter(this);
     leDepth->setFont(fontEdit);
     leDepth->setAlignment(Qt::AlignCenter);
     leDepth->setObjectName(Config::FORM_TEXT_DEPTH);
@@ -256,6 +316,7 @@ void MainWindow::CreateGroupLeftLayout()
     lblWeight->setFont(font);
     weigthBoxWidgetLayout->addWidget(lblWeight,0,0,1,1);
     leWeight = new QLineEdit();
+    //    leWeight->installEventFilter(this);
     leWeight->setAlignment(Qt::AlignCenter);
     leWeight->setFont(fontEdit);
     leWeight->setObjectName(Config::FORM_TEXT_WEIGHT);
@@ -275,6 +336,7 @@ void MainWindow::CreateGroupLeftLayout()
     lblVW->setFont(font);
     volumeWeigthBoxWidgetLayout->addWidget(lblVW,0,0,1,1);
     leVolumne= new QLineEdit();
+    //    leVolumne->installEventFilter(this);
     leVolumne->setAlignment(Qt::AlignCenter);
     leVolumne->setFont(fontEdit);
     leVolumne->setObjectName(Config::FORM_TEXT_VOLUME);
@@ -287,14 +349,14 @@ void MainWindow::CreateGroupLeftLayout()
     QWidget *topRightWidget = new QWidget;
     topRightWidget->setFixedSize(Config::LEFT_GROUP_WIDTH,370);
     QVBoxLayout *topRightWidgetLayout = new QVBoxLayout(topRightWidget);
-//    topRightWidgetLayout->setSpacing(10);
+    //    topRightWidgetLayout->setSpacing(10);
     topRightWidgetLayout->addWidget(weightBoxWidget);
     topRightWidgetLayout->addWidget(volumeWieghtBoxWidget);
 
 
-//    QPushButton *btn = new QPushButton("test");
-//    connect(btn,&QPushButton::clicked,this,&MainWindow::onTestBtnClicked);
-//    gridLayout->addWidget(btn,3,4,1,1);
+    //    QPushButton *btn = new QPushButton("test");
+    //    connect(btn,&QPushButton::clicked,this,&MainWindow::onTestBtnClicked);
+    //    gridLayout->addWidget(btn,3,4,1,1);
     //update 26/7/18
 
 
@@ -303,8 +365,12 @@ void MainWindow::CreateGroupLeftLayout()
     rootLeftWidgetLayout->addWidget(topRightWidget,Qt::AlignRight);
     uperLayout->addWidget(rootLeftWidget,Qt::AlignLeft);
 
-
-
+    //update 29/7/18
+    connect(leWeight,&QLineEdit::returnPressed,this,&MainWindow::onEditTextEnter);
+    connect(leDepth,&QLineEdit::returnPressed,this,&MainWindow::onEditTextEnter);
+    connect(leHeight,&QLineEdit::returnPressed,this,&MainWindow::onEditTextEnter);
+    connect(leWidth,&QLineEdit::returnPressed,this,&MainWindow::onEditTextEnter);
+    connect(leVolumne,&QLineEdit::returnPressed,this,&MainWindow::onEditTextEnter);
 
 }
 
@@ -314,7 +380,7 @@ void MainWindow::CreateGroupMidLayout()
     groupMidLayout->setFixedHeight(200);
 
     QVBoxLayout *layout = new QVBoxLayout;
-//    layout->setSizeConstraint(QLayout::SetMinimumSize);
+    //    layout->setSizeConstraint(QLayout::SetMinimumSize);
     //set logo
     QLabel *logo = new QLabel();
     logo->setPixmap( QPixmap(":/logo").scaled(Config::LOGO_WIDTH,Config::LOGO_HEIGHT,Qt::KeepAspectRatio));
@@ -325,7 +391,7 @@ void MainWindow::CreateGroupMidLayout()
     barcodeImage->setPixmap(QPixmap(":/barcode").scaled(Config::BARCODE_WIDTH,Config::BARCODE_HEIGHT,Qt::KeepAspectRatio));
     layout->addWidget(barcodeImage);
     //set barcode label
-    QLineEdit *barcodeLabel = new QLineEdit();
+    barcodeLabel = new QLineEdit();
     barcodeLabel->setFixedHeight(60);
     QFont font;
     font.setBold(true);
@@ -334,7 +400,7 @@ void MainWindow::CreateGroupMidLayout()
 
     groupMidLayout->setLayout(layout);
     rightlayout->insertWidget(0,groupMidLayout);
-
+    connect(barcodeLabel,&QLineEdit::returnPressed,this,&MainWindow::onEditTextEnter);
 }
 
 void MainWindow::CreateGroupRightLayout()
@@ -389,9 +455,9 @@ void MainWindow::CreateGroupRightLayout()
 
 void MainWindow::CreateLowerLayout()
 {
-//    lowerWidget = new QTableView;
+    //    lowerWidget = new QTableView;
     tableModel = new QStandardItemModel;
-    tableModel->setHorizontalHeaderLabels(QStringList()<<"id"<<"width"<<"height"<<"Length"<<"weight"<<"volume"<<"barcode"<<"date");
+    tableModel->setHorizontalHeaderLabels(QStringList()<<"id"<<"width"<<"height"<<"Length"<<"weight"<<"Volume-Weight"<<"barcode"<<"date");
     lowerTableView->setModel(tableModel);
     lowerTableView->verticalHeader()->hide();
     lowerTableView->setFixedHeight(200);
@@ -406,8 +472,9 @@ void MainWindow::CreateLowerLayout()
         else
             lowerTableView->setColumnWidth(i,80);
     }
-//    lowerTableView->horizontalHeader()->setStretchLastSection(true);
-//    lowerLayout->addWidget(lowerWidget);
+    connect(tableModel,&QStandardItemModel::dataChanged,this,&MainWindow::onTableDataChanged);
+    //    lowerTableView->horizontalHeader()->setStretchLastSection(true);
+    //    lowerLayout->addWidget(lowerWidget);
 }
 
 void MainWindow::CreatePortName()
@@ -432,7 +499,7 @@ QList<QStandardItem *> MainWindow::CreateModelRow(ReceivedData data)
     items.append(new QStandardItem(QString::number(data.depth)));
     items.append(new QStandardItem(QString::number(data.weight)));
     items.append(new QStandardItem(QString::number(data.volume)));
-//    items.append(new QStandardItem(QString::number(data.density)));
+    //    items.append(new QStandardItem(QString::number(data.density)));
     items.append(new QStandardItem(data.barcode));
     items.append(new QStandardItem(data.date));
     return items;
@@ -459,11 +526,15 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
         Qt::Key key = static_cast<Qt::Key>(keyEvent->key());
-        qDebug()<<"pressed "<<key;
         if(key ==Qt::Key_Space)
         {
             Log("key enter pressed");
             serial->SendData("\r");
         }
+        else if(key == Qt::Key_Return)
+        {
+
+        }
+
     }
 }

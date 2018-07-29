@@ -86,7 +86,7 @@ bool ModelInteract::UpdateRecord(float width, float height, float depth, float w
     OpenDatabase();
     QString insertQuery = "UPDATE Can SET width = "+QString::number(width)+",height= "+QString::number(height)+",depth = "+QString::number(depth)
             +" ,volume = "+QString::number(volume)+",weight="+QString::number(weight)
-            +",density="+QString::number(density)+",barcode="+barcode+", time ="+QDate::currentDate().toString("dd-MM-yyyy")+" Where id = "+QString::number(id);
+            +",density="+QString::number(density)+",barcode='"+barcode.trimmed()+"', time ='"+QDate::currentDate().toString("dd-MM-yyyy")+"' Where id = "+QString::number(id);
     Log(insertQuery);
     QSqlQuery query(insertQuery);
     if(!query.exec())

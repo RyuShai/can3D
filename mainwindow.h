@@ -40,6 +40,9 @@ public slots:
     void onpositionChanged(const QVector3D &position);
     void onviewCenterChanged(const QVector3D &viewCenter);
     void onTestBtnClicked();
+    void onSendSetupCodeClicked();
+    void onTableDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
+    void onEditTextEnter();
 private:
     //database
     ModelInteract* model;
@@ -69,6 +72,10 @@ private:
 
     QLineEdit * leVolumne ;
     QLineEdit *leWeight;
+    QLineEdit *leHeight;
+    QLineEdit *leWidth;
+    QLineEdit *leDepth;
+    QLineEdit *barcodeLabel;
     //function
     void CreateMenu();
     void CreateLayout();

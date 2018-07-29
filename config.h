@@ -65,10 +65,13 @@ static int EDIT_FONT_SIZE = 18;
 
 
 //object display text
-static QString MAIN_WINDOW_TITLE = "MAIN TITLE" ;
+static QString MAIN_WINDOW_TITLE = "MAIN TITLE" ; //window name here
 static QString MENU_TEXT_FILE ="File" ;
 static QString MENU_TEXT_EXIT = "Exit";
 static QString MENU_TEXT_PORT = "Port";
+static QString MENU_TEXT_SEND_SETUP = "Send setup";
+
+static QString SETUP_CODE = "*1.0,2.0,3.1,4.2,5.6,6.7,7.8,9.1#"; // setup code here
 
 static QString FORM_TEXT_HEIGHT = "Height";
 static QString FORM_TEXT_WIDTH  = "Width";
@@ -88,7 +91,7 @@ static QString HEIGHT="Height";
 static QString DEPTH="Length";
 static QString WEIGHT="Weight";
 static QString VOLUME="Volume";
-static QString DENSITY="density";
+static QString DENSITY="Density";
 static QString BARCODE="Barcode";
 
 }

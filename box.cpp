@@ -28,7 +28,7 @@ Box::Box(Qt3DCore::QEntity *root)
 
     //////////////////////
     canMesh = new Qt3DRender::QMesh(root);
-    canMesh->setSource(QUrl::fromLocalFile("/home/ryu/Documents/Project/Qt/can3D/Can_3D.obj"));
+    canMesh->setSource(QUrl("qrc:/Can"));
 
     Qt3DExtras::QPhongMaterial *canMaterial = new Qt3DExtras::QPhongMaterial();
     canMaterial->setDiffuse(QColor(57,82,72));
