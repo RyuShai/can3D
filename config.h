@@ -94,6 +94,8 @@ static QString VOLUME="Volume";
 static QString DENSITY="WV";
 static QString BARCODE="Barcode";
 
+static QString CAN_COLOR = "#c3beb3";
+static QString BOX_COLOR = "#7e6734";
 }
 
 

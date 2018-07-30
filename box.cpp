@@ -1,5 +1,5 @@
 #include "box.h"
-
+#include "config.h"
 
 Box::Box(Qt3DCore::QEntity *root)
 {
@@ -22,7 +22,7 @@ Box::Box(Qt3DCore::QEntity *root)
     //1-1.4,2-2.0,3-2.6,5-3.5
 
     Qt3DExtras::QPhongMaterial *cuboidMaterial = new Qt3DExtras::QPhongMaterial();
-    cuboidMaterial->setDiffuse(QColor(132,37,147));
+    cuboidMaterial->setDiffuse(QColor(Config::BOX_COLOR));
 
 
 
@@ -31,7 +31,7 @@ Box::Box(Qt3DCore::QEntity *root)
     canMesh->setSource(QUrl("qrc:/Can"));
 
     Qt3DExtras::QPhongMaterial *canMaterial = new Qt3DExtras::QPhongMaterial();
-    canMaterial->setDiffuse(QColor(57,82,72));
+    canMaterial->setDiffuse(QColor(Config::CAN_COLOR));
 
 
     // CuboidMesh Transform
