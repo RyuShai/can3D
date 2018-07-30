@@ -36,13 +36,14 @@ public slots:
     void onInserNewRecorded(ReceivedData data);
     void onModelInserted();
     void onTablemodelModified(QStandardItem* item);
-    void onLog();
+    void onLog(QAction *action);
     void onpositionChanged(const QVector3D &position);
     void onviewCenterChanged(const QVector3D &viewCenter);
     void onTestBtnClicked();
     void onSendSetupCodeClicked();
     void onTableDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
     void onEditTextEnter();
+    void CreatePortName();
 private:
     //database
     ModelInteract* model;
@@ -83,7 +84,7 @@ private:
     void CreateGroupMidLayout();
     void CreateGroupRightLayout();
     void CreateLowerLayout();
-    void CreatePortName();
+
     QList<QStandardItem*> CreateModelRow(ReceivedData data);
     float CalVolume(float w, float h, float d);
 

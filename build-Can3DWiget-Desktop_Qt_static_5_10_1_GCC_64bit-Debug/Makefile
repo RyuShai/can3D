@@ -1379,6 +1379,9 @@ moc_mainwindow.cpp: /home/ryu/Qt510static/include/QtWidgets/QMainWindow \
 		/home/ryu/Qt510static/include/QtWidgets/qrubberband.h \
 		/home/ryu/Qt510static/include/QtWidgets/QHeaderView \
 		/home/ryu/Qt510static/include/QtWidgets/qheaderview.h \
+		/home/ryu/Qt510static/include/Qt3DInput/QKeyEvent \
+		/home/ryu/Qt510static/include/Qt3DInput/qkeyevent.h \
+		/home/ryu/Qt510static/include/QtGui/QKeyEvent \
 		../config.h \
 		/home/ryu/Qt510static/include/QtCore/QString \
 		../readserialdata.h \
@@ -1812,6 +1815,9 @@ main.o: ../main.cpp ../mainwindow.h \
 		/home/ryu/Qt510static/include/QtWidgets/qrubberband.h \
 		/home/ryu/Qt510static/include/QtWidgets/QHeaderView \
 		/home/ryu/Qt510static/include/QtWidgets/qheaderview.h \
+		/home/ryu/Qt510static/include/Qt3DInput/QKeyEvent \
+		/home/ryu/Qt510static/include/Qt3DInput/qkeyevent.h \
+		/home/ryu/Qt510static/include/QtGui/QKeyEvent \
 		../config.h \
 		/home/ryu/Qt510static/include/QtCore/QString \
 		../readserialdata.h \
@@ -2252,6 +2258,9 @@ mainwindow.o: ../mainwindow.cpp ../mainwindow.h \
 		/home/ryu/Qt510static/include/QtWidgets/qrubberband.h \
 		/home/ryu/Qt510static/include/QtWidgets/QHeaderView \
 		/home/ryu/Qt510static/include/QtWidgets/qheaderview.h \
+		/home/ryu/Qt510static/include/Qt3DInput/QKeyEvent \
+		/home/ryu/Qt510static/include/Qt3DInput/qkeyevent.h \
+		/home/ryu/Qt510static/include/QtGui/QKeyEvent \
 		../config.h \
 		/home/ryu/Qt510static/include/QtCore/QString \
 		../readserialdata.h \
@@ -2713,8 +2722,6 @@ mainwindow.o: ../mainwindow.cpp ../mainwindow.h \
 		/home/ryu/Qt510static/include/Qt3DInput/qkeyboarddevice.h \
 		/home/ryu/Qt510static/include/Qt3DInput/QKeyboardHandler \
 		/home/ryu/Qt510static/include/Qt3DInput/qkeyboardhandler.h \
-		/home/ryu/Qt510static/include/Qt3DInput/qkeyevent.h \
-		/home/ryu/Qt510static/include/QtGui/QKeyEvent \
 		/home/ryu/Qt510static/include/Qt3DInput/qlogicaldevice.h \
 		/home/ryu/Qt510static/include/Qt3DInput/qmousedevice.h \
 		/home/ryu/Qt510static/include/Qt3DInput/qmouseevent.h \

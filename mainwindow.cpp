@@ -62,7 +62,7 @@ void MainWindow::onReceivedData(ReceivedData data)
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_WIDTH)->setText(QString::number(data.width));
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_DEPTH)->setText(QString::number(data.depth));
     leWeight->setText(QString::number(data.weight));
-    leVolumne->setText(QString::number(CalVolume(data.width,data.height,data.depth)));
+    leVolumne->setText(QString::number(data.density));
 
     model->InserRecord(data);
     if(data.height/10 !=box->cuboid->yExtent())
@@ -100,9 +100,9 @@ void MainWindow::onTablemodelModified(QStandardItem* item)
 
 }
 
-void MainWindow::onLog()
+void MainWindow::onLog(QAction *action)
 {
-
+    qDebug()<<"log"<<endl;
 }
 
 void MainWindow::onpositionChanged(const QVector3D &position)
@@ -183,9 +183,10 @@ void MainWindow::CreateMenu()
     menuBar->setNativeMenuBar(false);
     //file
     menu = new QMenu(Config::MENU_TEXT_FILE, this);
+    menu->installEventFilter(this);
     //add portMenu
     portMenu = menu->addMenu(Config::MENU_TEXT_PORT);
-    CreatePortName();
+//    CreatePortName();
     //send setup code action
     QAction * sendSetupCode = menu->addAction(Config::MENU_TEXT_SEND_SETUP);
     //exit action
@@ -198,7 +199,6 @@ void MainWindow::CreateMenu()
     connect(sendSetupCode,&QAction::triggered,this,&MainWindow::onSendSetupCodeClicked);
 
     rootHLayout->setMenuBar(menuBar);
-
 }
 
 void MainWindow::CreateLayout()
@@ -479,6 +479,7 @@ void MainWindow::CreateLowerLayout()
 
 void MainWindow::CreatePortName()
 {
+    Log("");
     portMenu->clear();
     serial->ListPortAvailable();
     qDebug()<<"list port size: "<<serial->getListPort().size();
@@ -523,7 +524,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if(event->type() == QEvent::KeyPress)
     {
-
         QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
         Qt::Key key = static_cast<Qt::Key>(keyEvent->key());
         if(key ==Qt::Key_Space)
@@ -536,5 +536,13 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
         }
 
+    }
+    if(event->type() == QEvent::MouseButtonPress)
+    {
+        if(obj == menu)
+        {
+            Log("mouse press");
+            CreatePortName();
+        }
     }
 }

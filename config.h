@@ -91,7 +91,7 @@ static QString HEIGHT="Height";
 static QString DEPTH="Length";
 static QString WEIGHT="Weight";
 static QString VOLUME="Volume";
-static QString DENSITY="Density";
+static QString DENSITY="WV";
 static QString BARCODE="Barcode";
 
 }

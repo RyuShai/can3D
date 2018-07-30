@@ -9,6 +9,7 @@
 #include "../mainwindow.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
+#include <QtCore/QVector>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'mainwindow.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
@@ -21,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[19];
-    char stringdata0[242];
+    QByteArrayData data[29];
+    char stringdata0[370];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -45,20 +46,34 @@ QT_MOC_LITERAL(10, 120, 20), // "onTablemodelModified"
 QT_MOC_LITERAL(11, 141, 14), // "QStandardItem*"
 QT_MOC_LITERAL(12, 156, 4), // "item"
 QT_MOC_LITERAL(13, 161, 5), // "onLog"
-QT_MOC_LITERAL(14, 167, 17), // "onpositionChanged"
-QT_MOC_LITERAL(15, 185, 8), // "position"
-QT_MOC_LITERAL(16, 194, 19), // "onviewCenterChanged"
-QT_MOC_LITERAL(17, 214, 10), // "viewCenter"
-QT_MOC_LITERAL(18, 225, 16) // "onTestBtnClicked"
+QT_MOC_LITERAL(14, 167, 8), // "QAction*"
+QT_MOC_LITERAL(15, 176, 6), // "action"
+QT_MOC_LITERAL(16, 183, 17), // "onpositionChanged"
+QT_MOC_LITERAL(17, 201, 8), // "position"
+QT_MOC_LITERAL(18, 210, 19), // "onviewCenterChanged"
+QT_MOC_LITERAL(19, 230, 10), // "viewCenter"
+QT_MOC_LITERAL(20, 241, 16), // "onTestBtnClicked"
+QT_MOC_LITERAL(21, 258, 22), // "onSendSetupCodeClicked"
+QT_MOC_LITERAL(22, 281, 18), // "onTableDataChanged"
+QT_MOC_LITERAL(23, 300, 7), // "topLeft"
+QT_MOC_LITERAL(24, 308, 11), // "bottomRight"
+QT_MOC_LITERAL(25, 320, 12), // "QVector<int>"
+QT_MOC_LITERAL(26, 333, 5), // "roles"
+QT_MOC_LITERAL(27, 339, 15), // "onEditTextEnter"
+QT_MOC_LITERAL(28, 355, 14) // "CreatePortName"
 
     },
     "MainWindow\0Exit\0\0onPortSelected\0"
     "onReceivedData\0ReceivedData\0data\0"
     "onModelRecordLoaded\0onInserNewRecorded\0"
     "onModelInserted\0onTablemodelModified\0"
-    "QStandardItem*\0item\0onLog\0onpositionChanged\0"
-    "position\0onviewCenterChanged\0viewCenter\0"
-    "onTestBtnClicked"
+    "QStandardItem*\0item\0onLog\0QAction*\0"
+    "action\0onpositionChanged\0position\0"
+    "onviewCenterChanged\0viewCenter\0"
+    "onTestBtnClicked\0onSendSetupCodeClicked\0"
+    "onTableDataChanged\0topLeft\0bottomRight\0"
+    "QVector<int>\0roles\0onEditTextEnter\0"
+    "CreatePortName"
 };
 #undef QT_MOC_LITERAL
 
@@ -68,7 +83,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      16,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -76,17 +91,22 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   69,    2, 0x0a /* Public */,
-       3,    0,   70,    2, 0x0a /* Public */,
-       4,    1,   71,    2, 0x0a /* Public */,
-       7,    0,   74,    2, 0x0a /* Public */,
-       8,    1,   75,    2, 0x0a /* Public */,
-       9,    0,   78,    2, 0x0a /* Public */,
-      10,    1,   79,    2, 0x0a /* Public */,
-      13,    0,   82,    2, 0x0a /* Public */,
-      14,    1,   83,    2, 0x0a /* Public */,
-      16,    1,   86,    2, 0x0a /* Public */,
-      18,    0,   89,    2, 0x0a /* Public */,
+       1,    0,   94,    2, 0x0a /* Public */,
+       3,    0,   95,    2, 0x0a /* Public */,
+       4,    1,   96,    2, 0x0a /* Public */,
+       7,    0,   99,    2, 0x0a /* Public */,
+       8,    1,  100,    2, 0x0a /* Public */,
+       9,    0,  103,    2, 0x0a /* Public */,
+      10,    1,  104,    2, 0x0a /* Public */,
+      13,    1,  107,    2, 0x0a /* Public */,
+      16,    1,  110,    2, 0x0a /* Public */,
+      18,    1,  113,    2, 0x0a /* Public */,
+      20,    0,  116,    2, 0x0a /* Public */,
+      21,    0,  117,    2, 0x0a /* Public */,
+      22,    3,  118,    2, 0x0a /* Public */,
+      22,    2,  125,    2, 0x2a /* Public | MethodCloned */,
+      27,    0,  130,    2, 0x0a /* Public */,
+      28,    0,  131,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -96,9 +116,14 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, 0x80000000 | 5,    6,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 11,   12,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QVector3D,   15,
+    QMetaType::Void, 0x80000000 | 14,   15,
     QMetaType::Void, QMetaType::QVector3D,   17,
+    QMetaType::Void, QMetaType::QVector3D,   19,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QModelIndex, QMetaType::QModelIndex, 0x80000000 | 25,   23,   24,   26,
+    QMetaType::Void, QMetaType::QModelIndex, QMetaType::QModelIndex,   23,   24,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -117,11 +142,34 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 4: _t->onInserNewRecorded((*reinterpret_cast< ReceivedData(*)>(_a[1]))); break;
         case 5: _t->onModelInserted(); break;
         case 6: _t->onTablemodelModified((*reinterpret_cast< QStandardItem*(*)>(_a[1]))); break;
-        case 7: _t->onLog(); break;
+        case 7: _t->onLog((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
         case 8: _t->onpositionChanged((*reinterpret_cast< const QVector3D(*)>(_a[1]))); break;
         case 9: _t->onviewCenterChanged((*reinterpret_cast< const QVector3D(*)>(_a[1]))); break;
         case 10: _t->onTestBtnClicked(); break;
+        case 11: _t->onSendSetupCodeClicked(); break;
+        case 12: _t->onTableDataChanged((*reinterpret_cast< const QModelIndex(*)>(_a[1])),(*reinterpret_cast< const QModelIndex(*)>(_a[2])),(*reinterpret_cast< const QVector<int>(*)>(_a[3]))); break;
+        case 13: _t->onTableDataChanged((*reinterpret_cast< const QModelIndex(*)>(_a[1])),(*reinterpret_cast< const QModelIndex(*)>(_a[2]))); break;
+        case 14: _t->onEditTextEnter(); break;
+        case 15: _t->CreatePortName(); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        switch (_id) {
+        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+        case 7:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QAction* >(); break;
+            }
+            break;
+        case 12:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 2:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<int> >(); break;
+            }
+            break;
         }
     }
 }
@@ -151,13 +199,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 16)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 16;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
-            *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 11;
+        if (_id < 16)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 16;
     }
     return _id;
 }

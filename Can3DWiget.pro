@@ -46,7 +46,6 @@ FORMS += \
 RESOURCES += \
     source.qrc
 
-win32: RC_ICONS = icon.ico
 #unix:!macx: LIBS += -L$$PWD/../../../../Qt510static/lib/ -lQt5Core
 
 #INCLUDEPATH += $$PWD/../../../../Qt510static/include
