@@ -56,7 +56,7 @@ static int BARCODE_HEIGHT = 80;
 
 static int LINE_EDIT_WIDTH = 100;
 static int LABEL_FONT_SIZE = 18;
-static int EDIT_FONT_SIZE = 18;
+static int EDIT_FONT_SIZE = 38;
 
 
 
@@ -96,6 +96,8 @@ static QString BARCODE="Barcode";
 
 static QString CAN_COLOR = "#c3beb3";
 static QString BOX_COLOR = "#7e6734";
+
+static QString DIALOG_ERROR_MESSAGE = "Error! The ";
 }
 
 

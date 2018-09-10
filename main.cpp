@@ -3,6 +3,7 @@
 #include "config.h"
 #include "readserialdata.h"
 #include <QtCore>
+#include "warningdialog.h"
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

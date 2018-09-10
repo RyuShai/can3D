@@ -30,14 +30,16 @@ SOURCES += \
     mainwindow.cpp \
     config.cpp \
     modelinteract.cpp \
-    box.cpp
+    box.cpp \
+    warningdialog.cpp
 
 HEADERS += \
     readserialdata.h \
     config.h \
     mainwindow.h \
     modelinteract.h \
-    box.h
+    box.h \
+    warningdialog.h
 
 FORMS += \
         mainwindow.ui

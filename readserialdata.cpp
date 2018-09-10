@@ -44,6 +44,11 @@ void ReadSerialData::onReceiveData()
     }
 }
 
+void ReadSerialData::onDisconnected()
+{
+    qDebug("ryu error");
+}
+
 QList<QSerialPortInfo> ReadSerialData::getListPort() const
 {
     return listPort;
@@ -72,6 +77,8 @@ bool ReadSerialData::Connect2Port(QSerialPortInfo port, qint32 baudrate, QSerial
 //        return false;
     }
     connect(serial,&QSerialPort::readyRead,this,&ReadSerialData::onReceiveData);
+    connect(serial,&QSerialPort::errorOccurred,this,&ReadSerialData::onDisconnected);
+
 }
 
 bool ReadSerialData::Connect2Port(QString portName, qint32 baudrate, QSerialPort::DataBits databits, QSerialPort::Parity parity, QSerialPort::StopBits stopbits)
@@ -93,6 +100,7 @@ bool ReadSerialData::Connect2Port(QString portName, qint32 baudrate, QSerialPort
         return false;
     }
     connect(serial,&QSerialPort::readyRead,this,&ReadSerialData::onReceiveData);
+    return true;
 }
 
 void ReadSerialData::CloseConnection()

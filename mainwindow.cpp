@@ -7,7 +7,7 @@
 #include <Qt3DExtras>
 #include <QBoxLayout>
 #include <QPushButton>
-
+#include "warningdialog.h"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     //init
@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     model->setPath2db(db);
     model->LoadRecord();
 
-
 }
 
 void MainWindow::Exit()
@@ -45,7 +44,13 @@ void MainWindow::onPortSelected()
 {
     QAction *action = qobject_cast<QAction*>(sender());
     qDebug()<<"i :" <<action->text();
-    serial->Connect2Port(action->text(),9600);
+    if(serial->Connect2Port(action->text(),9600))
+    {
+       connected->setIcon(QIcon(QPixmap(":/greendot.png")));
+    }
+    else{
+        connected->setIcon(QIcon(QPixmap(":/dot.png")));
+    }
 }
 
 void MainWindow::onReceivedData(ReceivedData data)
@@ -53,7 +58,31 @@ void MainWindow::onReceivedData(ReceivedData data)
     data.toString();
     if(data.width==0 || data.height ==0 ||data.depth ==0 ||data.weight==0)
     {
-        qDebug("must return");
+
+        qDebug("wrong data number");
+        QString msg = Config::DIALOG_ERROR_MESSAGE;
+        if(data.width==0)
+        {
+            msg += "width ";
+        }
+        if(data.height == 0)
+        {
+            msg += "height ";
+        }
+        if(data.depth == 0)
+        {
+            msg += "depth ";
+        }
+        if(data.weight == 0)
+        {
+            msg += "weight ";
+        }
+        msg+= "cant not be negative or zero";
+        WarningDialog *dialog = new WarningDialog(this);
+        dialog->setFixedSize(QSize(350,50));
+        dialog->setWindowModality(Qt::ApplicationModal);
+        dialog->message->setText(msg);
+        dialog->show();
         return;
     }
     qDebug("not return");
@@ -63,7 +92,7 @@ void MainWindow::onReceivedData(ReceivedData data)
     groupLeftWidget->findChild<QLineEdit *>(Config::FORM_TEXT_DEPTH)->setText(QString::number(data.depth));
     leWeight->setText(QString::number(data.weight));
     leVolumne->setText(QString::number(data.density));
-
+    barcodeLabel->setText(data.barcode);
     model->InserRecord(data);
     if(data.height/10 !=box->cuboid->yExtent())
         box->cuboid->setYExtent(data.height/10);
@@ -192,8 +221,14 @@ void MainWindow::CreateMenu()
     //exit action
     menuExitAction =menu->addAction(Config::MENU_TEXT_EXIT);
 
-    menuBar->addMenu(menu);
+    //add connection icon
+    connected = new QAction;
+    QIcon icon(QPixmap(":/dot.png"));
 
+    connected->setIcon(icon);
+
+    menuBar->addMenu(menu);
+    menuBar->addAction(connected);
     //connect signal=slot
     connect(menuExitAction,&QAction::triggered,this,&MainWindow::close);
     connect(sendSetupCode,&QAction::triggered,this,&MainWindow::onSendSetupCodeClicked);
@@ -396,6 +431,7 @@ void MainWindow::CreateGroupMidLayout()
     QFont font;
     font.setBold(true);
     font.setPointSize(Config::EDIT_FONT_SIZE);
+    barcodeLabel->setFont(font);
     layout->addWidget(barcodeLabel);
 
     groupMidLayout->setLayout(layout);

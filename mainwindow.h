@@ -77,6 +77,8 @@ private:
     QLineEdit *leWidth;
     QLineEdit *leDepth;
     QLineEdit *barcodeLabel;
+
+    QAction *connected;
     //function
     void CreateMenu();
     void CreateLayout();

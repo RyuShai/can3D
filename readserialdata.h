@@ -1,4 +1,4 @@
-#ifndef READSERIALDATA_H
+﻿#ifndef READSERIALDATA_H
 #define READSERIALDATA_H
 
 #include <QObject>
@@ -37,6 +37,7 @@ signals:
 public slots:
     void ListPortAvailable();
     void onReceiveData();
+    void onDisconnected();
 private:
     QSerialPort *serial;
     QList<QSerialPortInfo> listPort;

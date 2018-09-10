@@ -5,6 +5,8 @@
         <file>barcode.png</file>
         <file>logo.png</file>
         <file alias="Can">Can_3D.obj</file>
+        <file>dot.png</file>
+        <file>greendot.png</file>
     </qresource>
     <qresource prefix="/fonts">
         <file alias="font">57-dejavu-sans.conf</file>
